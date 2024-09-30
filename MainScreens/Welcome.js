@@ -9,9 +9,10 @@ const Welcome = () => {
     <View style={styles.container}>
       <Text style={styles.title}>FOODIEE</Text>
       <Image source={require('../Assests/food.png')} style={styles.image} />
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Login')}>
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Login')} activeOpacity={0.5}>
         <Text style={styles.buttonText}>Get Started</Text>
       </TouchableOpacity>
+      
     </View>
   );
 };
