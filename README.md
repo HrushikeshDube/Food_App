@@ -27,8 +27,3 @@ To get a local copy up and running, follow these steps:
 - Expo CLI (if using Expo)
 - Firebase account and project
 
-### Installation
-
-1. Clone the repo:
-   ```bash
-   git clone https://github.com/yourusername/your-repo-name.git
