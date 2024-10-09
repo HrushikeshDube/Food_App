@@ -9,7 +9,7 @@ const Login = () => {
 
   const handleLogin = () => {
     console.log('Logging in with email:', email, 'and password:', password);
-    navigation.navigate('Home');
+    navigation.replace('Tabnavigation');
   };
 
   return (

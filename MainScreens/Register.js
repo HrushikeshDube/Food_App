@@ -1,4 +1,4 @@
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ImageBackground, Image } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ImageBackground, Image, ScrollView } from 'react-native';
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
@@ -18,7 +18,8 @@ const Register = () => {
   };
 
   return (
-    <ImageBackground 
+    <ScrollView>
+      <ImageBackground 
       source={require('../Assests/bb.png')} 
       style={styles.container} 
       resizeMode="cover"
@@ -71,6 +72,7 @@ const Register = () => {
         </TouchableOpacity>
       </View>
     </ImageBackground>
+    </ScrollView>
   );
 };
 
@@ -85,7 +87,7 @@ const styles = StyleSheet.create({
   pic: {
     height: 200,
     width: 200,
-    marginTop: -50,
+    marginTop: -90,
   },
   box: {
     width: "90%",
