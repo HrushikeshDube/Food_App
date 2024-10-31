@@ -1,9 +1,30 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
-import React from 'react';
+import { StyleSheet, Text, View, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import auth from '@react-native-firebase/auth';
 
 const Welcome = () => {
-  const navigation = useNavigation(); // Move this line inside the component
+  const navigation = useNavigation();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const unsubscribe = auth().onAuthStateChanged(user => {
+      if (user) {
+        navigation.replace('Tabnavigation'); 
+      } else {
+        setLoading(false); // Show Welcome screen if not logged in
+      }
+    });
+    return unsubscribe;
+  }, [navigation]);
+
+  if (loading) {
+    return (
+      <View style={styles.loaderContainer}>
+        <ActivityIndicator size="large" color="#FF5733" />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -12,7 +33,6 @@ const Welcome = () => {
       <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Login')} activeOpacity={0.5}>
         <Text style={styles.buttonText}>Get Started</Text>
       </TouchableOpacity>
-      
     </View>
   );
 };
@@ -23,7 +43,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: '#FF5733', // Replace with the desired background color
+    backgroundColor: '#FF5733',
+  },
+  loaderContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#FF5733',
   },
   image: {
     width: '80%',
@@ -36,7 +62,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 32,
     fontWeight: 'bold',
-    color: '#FFFFFF', // Replace with the desired text color
+    color: '#FFFFFF',
     marginBottom: 20,
     marginTop: 30,
   },
@@ -50,6 +76,6 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#FF5733', // Replace with the desired button text color
+    color: '#FF5733',
   },
 });

@@ -12,6 +12,12 @@ import Home from './MainScreens/Home';
 import Wishlist from './MainScreens/Wishlist';
 import Order from './MainScreens/Order';
 import Account from './MainScreens/Account';
+import ForgotPassword from './MainScreens/Forgotpass';
+import Changepassword from './ProfileSubScreens/Changepassword';
+import Paymentsetting from './ProfileSubScreens/Paymentsetting';
+import Notifications from './ProfileSubScreens/Notifications';
+import Aboutus from './ProfileSubScreens/Aboutus';
+import Myprofile from './ProfileSubScreens/Myprofile';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -30,7 +36,7 @@ const Tabnavigation = () => {
           right: 10,
           elevation: 6,
           backgroundColor: '#fff',
-          borderRadius:15,
+          borderRadius: 15,
           height: 60,
         },
       }}>
@@ -44,7 +50,7 @@ const Tabnavigation = () => {
         component={Home}
         name="Home"
       />
-      
+
       <Tab.Screen
         options={{
           headerShown: false,
@@ -84,7 +90,7 @@ function App() {
     <NavigationContainer>
       <Stack.Navigator
         screenOptions={{ headerShown: false }}
-        initialRouteName="Tabnavigation">
+      >
         <Stack.Screen name="Welcome" component={Welcome} />
         <Stack.Screen name="Register" component={Register} />
         <Stack.Screen name="Login" component={Login} />
@@ -93,6 +99,64 @@ function App() {
         <Stack.Screen name="Wishlist" component={Wishlist} />
         <Stack.Screen name="Order" component={Order} />
         <Stack.Screen name="Account" component={Account} />
+        <Stack.Screen
+          name="Myprofile"
+          component={Myprofile}
+          options={{
+            title: 'My Profile',
+            headerShown: true, 
+            headerBackTitleVisible: false, 
+            headerTintColor: '#FF6347',
+            headerStyle: {
+              backgroundColor: '#f5f5f5', 
+            },
+          }}
+        />
+        <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={{
+            title: 'My Profile',
+            headerShown: true, 
+            headerBackTitleVisible: false, 
+            headerTintColor: '#FF6347',
+            headerStyle: {
+              backgroundColor: '#f5f5f5', 
+            },
+          }}/>
+        <Stack.Screen name="Changepassword" component={Changepassword} options={{
+            title: 'Change Password',
+            headerShown: true, 
+            headerBackTitleVisible: false, 
+            headerTintColor: '#FF6347',
+            headerStyle: {
+              backgroundColor: '#f5f5f5', 
+            },
+          }}/>
+        <Stack.Screen name="Paymentsetting" component={Paymentsetting} options={{
+            title: 'Payment',
+            headerShown: true, 
+            headerBackTitleVisible: false, 
+            headerTintColor: '#FF6347',
+            headerStyle: {
+              backgroundColor: '#f5f5f5', 
+            },
+          }}/>
+        <Stack.Screen name="Notifications" component={Notifications} options={{
+            title: 'Notifications',
+            headerShown: true, 
+            headerBackTitleVisible: false, 
+            headerTintColor: '#FF6347',
+            headerStyle: {
+              backgroundColor: '#f5f5f5', 
+            },
+          }}/>
+        <Stack.Screen name="Aboutus" component={Aboutus} options={{
+            title: 'About Us',
+            headerShown: true, 
+            headerBackTitleVisible: false, 
+            headerTintColor: '#FF6347',
+            headerStyle: {
+              backgroundColor: '#f5f5f5', 
+            },
+          }}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -1,77 +1,137 @@
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ImageBackground, Image, ScrollView } from 'react-native';
 import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ImageBackground, Image, ScrollView, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const Register = () => {
   const navigation = useNavigation();
-  
+
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [address, setAddress] = useState('');
   const [mobile, setMobile] = useState('');
+  const [rememberMe, setRememberMe] = useState(false);
 
-  const handleRegister = () => {
-    // Implement your registration logic here, e.g., API call
-    console.log('Registering with:', { username, email, password, address, mobile });
-    navigation.navigate('Login');
+  const validateInputs = () => {
+    if (!username || !email || !password || !address || !mobile) {
+      Alert.alert('Error', 'Please fill in all fields.');
+      return false;
+    }
+
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{7,}$/;
+    if (!passwordRegex.test(password)) {
+      Alert.alert(
+        'Error',
+        'Password must be at least 7 characters long, with one uppercase letter, one number, and one special symbol.'
+      );
+      return false;
+    }
+
+    return true;
+  };
+
+  const handleRegister = async () => {
+    if (!validateInputs()) return;
+
+    try {
+      const userCredential = await auth().createUserWithEmailAndPassword(email, password);
+      await firestore().collection('Users').doc(email).set({
+        username,
+        email,
+        address,
+        mobile,
+        rememberMe
+      });
+
+      Alert.alert('Success', 'Registration successful!');
+      setUsername('');
+      setEmail('');
+      setPassword('');
+      setAddress('');
+      setMobile('');
+      setRememberMe(false);
+
+      navigation.navigate('Login');
+    } catch (error) {
+      console.error('Registration error:', error);
+      Alert.alert('Database Error');
+    }
   };
 
   return (
     <ScrollView>
-      <ImageBackground 
-      source={require('../Assests/bb.png')} 
-      style={styles.container} 
-      resizeMode="cover"
-    >
-      <View style={styles.box}>
-        <Image source={require('../Assests/SAMOSA.png')} style={styles.pic} />
-        <Text style={styles.logintext}>Register</Text>
-        
-        <TextInput 
-          style={styles.input} 
-          placeholder="Username" 
-          value={username} 
-          onChangeText={setUsername} 
-        />
-        <TextInput 
-          style={styles.input} 
-          placeholder="Email" 
-          value={email} 
-          onChangeText={setEmail} 
-        />
-        <TextInput 
-          style={styles.input} 
-          placeholder="Password" 
-          value={password} 
-          onChangeText={setPassword} 
-          secureTextEntry 
-        />
-        <TextInput 
-          style={styles.input} 
-          placeholder="Address" 
-          value={address} 
-          onChangeText={setAddress} 
-        />
-        <TextInput 
-          style={styles.input} 
-          placeholder="Mobile No" 
-          value={mobile} 
-          onChangeText={setMobile} 
-          keyboardType="phone-pad" // Optional: opens numeric keyboard for phone input
-        />
-        
-        <TouchableOpacity style={styles.button} onPress={handleRegister} activeOpacity={0.5} >
-          <Text style={styles.buttonText}>Register</Text>
-        </TouchableOpacity>
-        
-        <TouchableOpacity onPress={() => navigation.navigate('Login')} activeOpacity={0.5}>
-          <Text style={styles.title}>
-            Already Registered? <Text style={styles.signupText}>Sign In</Text>
-          </Text>
-        </TouchableOpacity>
-      </View>
-    </ImageBackground>
+      <ImageBackground
+        source={require('../Assests/bb.png')}
+        style={styles.container}
+        resizeMode="cover"
+      >
+        <View style={styles.box}>
+          <Image source={require('../Assests/SAMOSA.png')} style={styles.pic} />
+          <Text style={styles.logintext}>Register</Text>
+
+          <TextInput
+            style={styles.input}
+            placeholder="Username"
+            value={username}
+            onChangeText={setUsername}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Email"
+            value={email}
+            onChangeText={setEmail}
+          />
+
+          {/* Password Input with Show/Hide Toggle */}
+          <View style={styles.passwordContainer}>
+            <TextInput
+              style={[styles.input, { flex: 1 }]}
+              placeholder="Password"
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry={!isPasswordVisible}
+            />
+          </View>
+
+          <TextInput
+            style={styles.input}
+            placeholder="Address"
+            value={address}
+            onChangeText={setAddress}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Mobile No"
+            value={mobile}
+            onChangeText={setMobile}
+            keyboardType="phone-pad"
+          />
+          <View style={styles.optionsRow}>
+            <TouchableOpacity
+              style={styles.checkboxContainer}
+              onPress={() => setRememberMe(!rememberMe)}
+            >
+              <View style={[styles.checkbox, rememberMe && styles.checkboxChecked]}>
+                {rememberMe && <Text style={styles.checkmark}>✓</Text>}
+              </View>
+              <Text style={styles.rememberMeText}>Remember Me</Text>
+            </TouchableOpacity>
+          </View>
+          <TouchableOpacity style={styles.button} onPress={handleRegister} activeOpacity={0.5}>
+            <Text style={styles.buttonText}>Register</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => navigation.navigate('Login')} activeOpacity={0.5}>
+            <Text style={styles.title}>
+              Already Registered? <Text style={styles.signupText}>Sign In</Text>
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </ImageBackground>
     </ScrollView>
   );
 };
@@ -91,7 +151,7 @@ const styles = StyleSheet.create({
   },
   box: {
     width: "90%",
-    height: "70%", 
+    height: "70%",
     borderRadius: 10,
     padding: 20,
     alignItems: 'center',
@@ -112,6 +172,46 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     borderRadius: 5,
     backgroundColor: 'transparent',
+  },
+  passwordContainer: {
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  optionsRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  forgotText: {
+    color: 'gray',
+    textDecorationLine: 'underline',
+  },
+  checkboxContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  checkbox: {
+    width: 20,
+    height: 20,
+    borderWidth: 1,
+    borderColor: 'gray',
+    marginRight: 5,
+    borderRadius: 3,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  checkboxChecked: {
+    backgroundColor: '#FF5733',
+  },
+  checkmark: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
+  rememberMeText: {
+    color: 'black',
   },
   button: {
     backgroundColor: '#FF5733',

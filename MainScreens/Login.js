@@ -1,39 +1,87 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ImageBackground, Image } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ImageBackground, Image, ToastAndroid, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import auth from '@react-native-firebase/auth';
 
 const Login = () => {
   const navigation = useNavigation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [rememberMe, setRememberMe] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const unsubscribe = auth().onAuthStateChanged(user => {
+      if (user) {
+        navigation.replace('Tabnavigation', { userEmail: user.email }); 
+      }
+      setLoading(false); // Stop showing the loader once auth check is done
+    });
+    return unsubscribe;
+  }, [navigation]);
 
   const handleLogin = () => {
-    console.log('Logging in with email:', email, 'and password:', password);
-    navigation.replace('Tabnavigation');
+    setLoading(true); // Show loader during login
+    auth()
+      .signInWithEmailAndPassword(email, password)
+      .then(() => {
+        ToastAndroid.show('Successfully Logged In', ToastAndroid.SHORT);
+        setEmail('');
+        setPassword('');
+        navigation.replace('Tabnavigation', { userEmail: email }); // Pass email to Tabnavigation
+      })
+      .catch(() => {
+        ToastAndroid.show('Invalid Credentials', ToastAndroid.SHORT);
+      })
+      .finally(() => {
+        setLoading(false); // Stop loader after login attempt
+      });
   };
 
+  if (loading) {
+    return (
+      <View style={styles.loaderContainer}>
+        <ActivityIndicator size="large" color="#FF5733" />
+      </View>
+    );
+  }
+
   return (
-    <ImageBackground 
-      source={require('../Assests/bb.png')} 
-      style={styles.container} 
+    <ImageBackground
+      source={require('../Assests/bb.png')}
+      style={styles.container}
       resizeMode="cover"
     >
       <View style={styles.box}>
         <Image source={require('../Assests/SAMOSA.png')} style={styles.pic} />
         <Text style={styles.logintext}>LOGIN</Text>
-        <TextInput 
-          style={styles.input} 
-          placeholder="Email" 
-          value={email} 
-          onChangeText={setEmail} 
+        <TextInput
+          style={styles.input}
+          placeholder="Email"
+          value={email}
+          onChangeText={setEmail}
         />
-        <TextInput 
-          style={styles.input} 
-          placeholder="Password" 
-          value={password} 
-          onChangeText={setPassword} 
-          secureTextEntry 
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry
         />
+        <View style={styles.optionsRow}>
+          <TouchableOpacity
+            style={styles.checkboxContainer}
+            onPress={() => setRememberMe(!rememberMe)}
+          >
+            <View style={[styles.checkbox, rememberMe && styles.checkboxChecked]}>
+              {rememberMe && <Text style={styles.checkmark}>✓</Text>}
+            </View>
+            <Text style={styles.rememberMeText}>Remember Me</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
+            <Text style={styles.forgotText}>Forgot Password?</Text>
+          </TouchableOpacity>
+        </View>
         <TouchableOpacity style={styles.button} onPress={handleLogin} activeOpacity={0.5}>
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
@@ -52,6 +100,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  loaderContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#ffffff', // Background color for loading screen
   },
   pic: {
     height: 200,
@@ -95,12 +149,47 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   title: {
-    color: 'black', 
+    color: 'black',
     marginTop: 15,
   },
+  optionsRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  forgotText: {
+    color: 'gray',
+    textDecorationLine: 'underline',
+  },
+  checkboxContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  checkbox: {
+    width: 20,
+    height: 20,
+    borderWidth: 1,
+    borderColor: 'gray',
+    marginRight: 5,
+    borderRadius: 3,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  checkboxChecked: {
+    backgroundColor: '#FF5733',
+  },
+  checkmark: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
+  rememberMeText: {
+    color: 'black',
+  },
   signupText: {
-    color: 'gray', 
-    textDecorationLine: 'underline', 
+    color: 'gray',
+    textDecorationLine: 'underline',
   },
 });
 

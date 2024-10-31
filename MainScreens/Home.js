@@ -1,37 +1,72 @@
-import React from 'react';
-import { View, Text, StyleSheet, Image, FlatList, TouchableOpacity, SafeAreaView, ScrollView, TextInput } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, ImageBackground, TouchableOpacity, SafeAreaView, ScrollView, TextInput, Image } from 'react-native';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faSearch,faUser } from '@fortawesome/free-solid-svg-icons';
+import { useNavigation } from '@react-navigation/native';
+import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
 
-const popularDishes = [
+// Array of image URLs for the boxes
+const boxImages = [
   {
-    id: '1',
-    name: 'Salmon With Vegetables in Soy Sauce',
-    price: '$30.00',
-    image: 'https://example.com/salmon.jpg', // Replace with actual image link
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQ5QtobNY5VLWxPofydn-LskVa9h2X3N4iOA&s',
+    name: 'Pizza',
   },
   {
-    id: '2',
-    name: 'Grilled Chicken with Rice',
-    price: '$25.00',
-    image: 'https://example.com/chicken.jpg', // Replace with actual image link
-  }
-];
-
-const categories = [
-  'European',
-  'Mediterranean',
-  'Asian',
-  'American',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQ5QtobNY5VLWxPofydn-LskVa9h2X3N4iOA&s',
+    name: 'Burgers',
+  },
+  {
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQ5QtobNY5VLWxPofydn-LskVa9h2X3N4iOA&s',
+    name: 'Sushi',
+  },
+  {
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQ5QtobNY5VLWxPofydn-LskVa9h2X3N4iOA&s',
+    name: 'Pasta',
+  },
+  {
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQ5QtobNY5VLWxPofydn-LskVa9h2X3N4iOA&s',
+    name: 'Desserts',
+  },
+  {
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQ5QtobNY5VLWxPofydn-LskVa9h2X3N4iOA&s',
+    name: 'Salads',
+  },
 ];
 
 const Home = () => {
+  const navigation = useNavigation(); 
+  const [profileImage, setProfileImage] = useState(null); // State to store the profile image URL
+
+  useEffect(() => {
+    const fetchProfileImage = async () => {
+      const user = auth().currentUser; // Get the currently authenticated user
+      if (user) {
+        const userDoc = await firestore().collection('Users').doc(user.email).get(); // Fetch user data
+        if (userDoc.exists) {
+          const data = userDoc.data();
+          if (data.profileImage) {
+            setProfileImage(data.profileImage); // Set the profile image URL from Firestore
+          }
+        }
+      }
+    };
+
+    fetchProfileImage();
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
         {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.brand}>UTOSIA</Text>
-          <TouchableOpacity>
-            <Text style={styles.menu}>☰</Text>
+          <Text style={styles.brand}>Order Joy, Your Next Meal Is Just A Tap Away!</Text>
+          <TouchableOpacity style={styles.menu} onPress={() => navigation.navigate('Account')}>
+            {profileImage ? (
+              <Image source={{ uri: profileImage }} style={styles.profileImage} />
+            ) : (
+              <FontAwesomeIcon icon={faUser} size={20} color={"#FF5733"} />
+            )}
           </TouchableOpacity>
         </View>
 
@@ -42,37 +77,34 @@ const Home = () => {
             placeholder="Search"
           />
           <TouchableOpacity style={styles.filterButton}>
-            <Text style={styles.filterText}>☰</Text>
+            <Text style={styles.filterText}><FontAwesomeIcon icon={faSearch} size={20} color={"#FF5733"} /></Text>
           </TouchableOpacity>
         </View>
 
-        {/* Popular Dishes Section */}
-        <Text style={styles.sectionTitle}>Popular Dishes</Text>
-        <FlatList
-          data={popularDishes}
-          horizontal
-          keyExtractor={item => item.id}
-          renderItem={({ item }) => (
-            <View style={styles.card}>
-              <Image source={{ uri: item.image }} style={styles.cardImage} />
-              <Text style={styles.cardTitle}>{item.name}</Text>
-              <Text style={styles.cardPrice}>{item.price}</Text>
-              <TouchableOpacity style={styles.addToCartButton}>
-                <Text style={styles.addToCartText}>Add To Cart</Text>
-              </TouchableOpacity>
-            </View>
-          )}
-        />
-
-        {/* Categories Section */}
-        <Text style={styles.sectionTitle}>Categories</Text>
-        <View style={styles.categoryContainer}>
-          {categories.map((category, index) => (
-            <TouchableOpacity key={index} style={styles.categoryButton}>
-              <Text style={styles.categoryText}>{category}</Text>
-            </TouchableOpacity>
-          ))}
+        {/* Offer Card Section with Background Image */}
+        <View style={styles.offercard}>
+          <ImageBackground
+            source={{ uri: 'https://cdn.grabon.in/gograbon/images/web-images/uploads/1618575517942/food-coupons.jpg' }}
+            style={styles.offerImage}
+            imageStyle={{ borderRadius: 8 }}  // Ensures the image has rounded corners
+          >
+          </ImageBackground>
         </View>
+
+        {/* Horizontal Scrolling Component */}
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.boxContainer}>
+          {boxImages.map((item, index) => (
+            <View key={index} style={styles.box}>
+              <ImageBackground
+                source={{ uri: item.image }}
+                style={styles.boxImage}
+                imageStyle={{ borderRadius: 5 }} // Rounded corners for the image
+              >
+              </ImageBackground>
+              <Text style={styles.boxText}>{item.name}</Text> 
+            </View>
+          ))}
+        </ScrollView>
       </ScrollView>
     </SafeAreaView>
   );
@@ -91,11 +123,23 @@ const styles = StyleSheet.create({
     marginVertical: 16,
   },
   brand: {
-    fontSize: 28,
+    fontSize: 22,
     fontWeight: 'bold',
+    width: '80%',
+    color: "black",
   },
   menu: {
-    fontSize: 28,
+    width: 40,
+    height: 40,
+    borderRadius: 20, // Optional: Makes the profile image circular
+    overflow: 'hidden', // Ensures image fits in the rounded container
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  profileImage: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 20, // Circular profile image
   },
   searchContainer: {
     flexDirection: 'row',
@@ -106,78 +150,51 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     shadowColor: '#000',
     shadowOpacity: 0.1,
-    shadowRadius: 8,
+    shadowRadius: 10,
     elevation: 4,
+    width: "100%",
   },
   searchInput: {
     flex: 1,
     paddingVertical: 8,
     fontSize: 16,
   },
-  filterButton: {
-    padding: 8,
+  offercard: {
+    height: 180,
+    width: "100%",
+    borderRadius: 10,
+    marginTop: 5,
   },
-  filterText: {
-    fontSize: 24,
-    color: '#FFA500',
+  offerImage: {
+    width: '100%',
+    height: "100%",
+    justifyContent: 'center', // Center content inside ImageBackground
+    alignItems: 'center',
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginVertical: 16,
+  boxContainer: {
+    marginTop: 20,
+    flexDirection: 'row', // Aligns the boxes horizontally
   },
-  card: {
-    backgroundColor: '#fff',
-    borderRadius: 8,
-    marginRight: 16,
-    padding: 10,
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 4,
-  },
-  cardImage: {
-    width: 120,
+  box: {
     height: 80,
-    borderRadius: 8,
+    width: 80,
+    backgroundColor: 'transparent', // Remove solid background color for image
+    marginHorizontal: 5, // Adds space between boxes
+    borderRadius: 5, // Optional: Adds rounded corners to boxes
+    overflow: 'hidden', // Ensure children are clipped to the border
   },
-  cardTitle: {
-    fontSize: 16,
+  boxImage: {
+    height: '100%',
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  boxText: {
+    color: 'black',
     fontWeight: 'bold',
-    marginVertical: 8,
-  },
-  cardPrice: {
-    fontSize: 14,
-    color: '#888',
-  },
-  addToCartButton: {
-    backgroundColor: '#FFA500',
-    paddingVertical: 8,
-    borderRadius: 4,
-    marginTop: 8,
-  },
-  addToCartText: {
-    textAlign: 'center',
-    color: '#fff',
-    fontWeight: 'bold',
-  },
-  categoryContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-  },
-  categoryButton: {
-    backgroundColor: '#FFA500',
-    borderRadius: 8,
-    paddingVertical: 10,
-    paddingHorizontal: 16,
-    marginVertical: 5,
-    flexBasis: '48%',
-  },
-  categoryText: {
-    textAlign: 'center',
-    color: '#fff',
-    fontWeight: 'bold',
+    position: 'absolute',
+    marginTop:60,
+    marginLeft:10 // Position the text over the image
   },
 });
 
