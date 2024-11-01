@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, Dimensions, ToastAndroid } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faUser, faLock, faCreditCard, faBell, faInfoCircle, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { launchImageLibrary } from 'react-native-image-picker';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
@@ -104,20 +105,20 @@ const Profile = ({ navigation }) => {
 
         <View style={styles.optionsContainer}>
           {[
-            { title: 'My Profile', icon: 'user', screen: 'Myprofile' },
-            { title: 'Change Password', icon: 'lock', screen: 'Changepassword' },
-            { title: 'Payment Settings', icon: 'credit-card', screen: 'Paymentsetting' },
-            { title: 'Notification', icon: 'bell', screen: 'Notifications' },
-            { title: 'About Us', icon: 'info-circle', screen: 'Aboutus' },
+            { title: 'My Profile', icon: faUser, screen: 'Myprofile' },
+            { title: 'Change Password', icon: faLock, screen: 'Changepassword' },
+            { title: 'Payment Settings', icon: faCreditCard, screen: 'Paymentsetting' },
+            { title: 'Notification', icon: faBell, screen: 'Notifications' },
+            { title: 'About Us', icon: faInfoCircle, screen: 'Aboutus' },
           ].map((option, index) => (
             <TouchableOpacity
               key={index}
               style={styles.option}
-              onPress={() => navigation.navigate(option.screen)} // Navigate to the corresponding screen
+              onPress={() => navigation.navigate(option.screen)}
             >
-              <Icon name={option.icon} size={20} color="#333" style={styles.optionIcon} />
+              <FontAwesomeIcon icon={option.icon} size={20} color="#FF6347" style={styles.optionIcon} />
               <Text style={styles.optionText}>{option.title}</Text>
-              <Icon name="chevron-right" size={16} color="#aaa" style={styles.chevronIcon} />
+              <FontAwesomeIcon icon={faChevronRight} size={16} color="#aaa" style={styles.chevronIcon} />
             </TouchableOpacity>
           ))}
         </View>
@@ -126,20 +127,6 @@ const Profile = ({ navigation }) => {
           <Text style={styles.signOutText}>Sign Out</Text>
         </TouchableOpacity>
       </ScrollView>
-
-      <View style={styles.bottomNav}>
-        {[
-          { title: 'Home', icon: 'home' },
-          { title: 'Order', icon: 'list-alt' },
-          { title: 'My List', icon: 'bookmark' },
-          { title: 'Profile', icon: 'user', active: true }
-        ].map((navItem, index) => (
-          <TouchableOpacity key={index} style={styles.navItem}>
-            <Icon name={navItem.icon} size={24} color={navItem.active ? "#FF6347" : "#aaa"} />
-            <Text style={[styles.navText, navItem.active && { color: "#FF6347" }]}>{navItem.title}</Text>
-          </TouchableOpacity>
-        ))}
-      </View>
     </View>
   );
 };

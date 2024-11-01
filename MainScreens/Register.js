@@ -3,7 +3,8 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, ImageBackground, I
 import { useNavigation } from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 const Register = () => {
   const navigation = useNavigation();
@@ -95,6 +96,9 @@ const Register = () => {
               onChangeText={setPassword}
               secureTextEntry={!isPasswordVisible}
             />
+            <TouchableOpacity onPress={() => setIsPasswordVisible(!isPasswordVisible)}>
+              <FontAwesomeIcon icon={isPasswordVisible ? faEye : faEyeSlash} size={20} color="gray" />
+            </TouchableOpacity>
           </View>
 
           <TextInput
@@ -177,6 +181,9 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  icon: {
+    paddingHorizontal: 10,
   },
   optionsRow: {
     flexDirection: 'row',

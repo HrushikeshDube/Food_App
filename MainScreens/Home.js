@@ -1,42 +1,57 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ImageBackground, TouchableOpacity, SafeAreaView, ScrollView, TextInput, Image } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faSearch,faUser } from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faUser } from '@fortawesome/free-solid-svg-icons';
 import { useNavigation } from '@react-navigation/native';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 
-// Array of image URLs for the boxes
+// Import local images
+const breakfastImage = require('../Assests/breakfast.png');
+const bhajiImage = require('../Assests/bhaji.png');
+const rotiImage = require('../Assests/roti.png');
+const riceImage = require('../Assests/rice.png');
+const dessertImage = require('../Assests/deserts.png');
+const colddrinkImage = require('../Assests/drinks.png');
+
+// Array of image sources for the boxes with target screens
 const boxImages = [
   {
-    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQ5QtobNY5VLWxPofydn-LskVa9h2X3N4iOA&s',
-    name: 'Pizza',
+    image: breakfastImage,
+    name: 'Breakfast',
+    screen: 'Breakfast',
   },
   {
-    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQ5QtobNY5VLWxPofydn-LskVa9h2X3N4iOA&s',
-    name: 'Burgers',
+    image: bhajiImage,
+    name: 'Bhaji\'s',
+    screen: 'Bhaji',
   },
   {
-    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQ5QtobNY5VLWxPofydn-LskVa9h2X3N4iOA&s',
-    name: 'Sushi',
+    image: rotiImage,
+    name: 'Roti\'s',
+    screen: 'Roti',
   },
   {
-    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQ5QtobNY5VLWxPofydn-LskVa9h2X3N4iOA&s',
-    name: 'Pasta',
+    image: riceImage,
+    name: 'Rice',
+    screen: 'Rice',
   },
   {
-    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQ5QtobNY5VLWxPofydn-LskVa9h2X3N4iOA&s',
+    image: dessertImage,
     name: 'Desserts',
+    screen: 'Desert',
   },
   {
-    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQ5QtobNY5VLWxPofydn-LskVa9h2X3N4iOA&s',
-    name: 'Salads',
+    image: colddrinkImage,
+    name: 'Drink\'s',
+    screen: 'Drink',
   },
 ];
 
 const Home = () => {
-  const navigation = useNavigation(); 
+  const navigation = useNavigation();
   const [profileImage, setProfileImage] = useState(null); // State to store the profile image URL
+  const [offerImages, setOfferImages] = useState([]); // State to store an array of offer images
 
   useEffect(() => {
     const fetchProfileImage = async () => {
@@ -52,7 +67,14 @@ const Home = () => {
       }
     };
 
+    const fetchOfferImages = async () => {
+      const offerSnapshot = await firestore().collection('Offer').get(); // Fetch all documents from the Offer collection
+      const images = offerSnapshot.docs.map(doc => doc.data().Offerimage).filter(Boolean); // Extract offer images
+      setOfferImages(images); // Set the offer images array
+    };
+
     fetchProfileImage();
+    fetchOfferImages();
   }, []);
 
   return (
@@ -81,28 +103,35 @@ const Home = () => {
           </TouchableOpacity>
         </View>
 
-        {/* Offer Card Section with Background Image */}
+        {/* Offer Card Section with Scrollable Image Background */}
         <View style={styles.offercard}>
-          <ImageBackground
-            source={{ uri: 'https://cdn.grabon.in/gograbon/images/web-images/uploads/1618575517942/food-coupons.jpg' }}
-            style={styles.offerImage}
-            imageStyle={{ borderRadius: 8 }}  // Ensures the image has rounded corners
-          >
-          </ImageBackground>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            {offerImages.length > 0 ? (
+              offerImages.map((image, index) => (
+                <ImageBackground
+                  key={index}
+                  source={{ uri: image }}
+                  style={styles.offerImage}
+                  imageStyle={{ borderRadius: 8 }}  // Ensures the image has rounded corners
+                >
+                  {/* Optionally, you can add content inside the ImageBackground */}
+                </ImageBackground>
+              ))
+            ) : (
+              <Text style={styles.loadingText}>Loading offers...</Text>
+            )}
+          </ScrollView>
         </View>
 
-        {/* Horizontal Scrolling Component */}
+        {/* Horizontal Scrolling Component for food categories */}
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.boxContainer}>
           {boxImages.map((item, index) => (
-            <View key={index} style={styles.box}>
-              <ImageBackground
-                source={{ uri: item.image }}
-                style={styles.boxImage}
-                imageStyle={{ borderRadius: 5 }} // Rounded corners for the image
-              >
-              </ImageBackground>
-              <Text style={styles.boxText}>{item.name}</Text> 
-            </View>
+            <TouchableOpacity key={index} style={styles.box} onPress={() => navigation.navigate(item.screen)}>
+              <Image source={item.image} style={styles.boxImage} />
+              <View style={styles.textContainer}>
+                <Text style={styles.boxText}>{item.name}</Text>
+              </View>
+            </TouchableOpacity>
           ))}
         </ScrollView>
       </ScrollView>
@@ -164,37 +193,48 @@ const styles = StyleSheet.create({
     width: "100%",
     borderRadius: 10,
     marginTop: 5,
+    overflow: 'hidden', // Ensures that images do not overflow outside the card
   },
   offerImage: {
-    width: '100%',
-    height: "100%",
+    width:400, // Set width for each offer image
+    height: '100%', // Ensure the image fills the height of the offer card
     justifyContent: 'center', // Center content inside ImageBackground
     alignItems: 'center',
+    borderRadius: 8,
+  },
+  loadingText: {
+    color: '#FF5733',
+    textAlign: 'center',
+    marginTop: 'auto',
+    marginBottom: 'auto',
   },
   boxContainer: {
     marginTop: 20,
-    flexDirection: 'row', // Aligns the boxes horizontally
+    flexDirection: 'row',
   },
   box: {
-    height: 80,
-    width: 80,
-    backgroundColor: 'transparent', // Remove solid background color for image
-    marginHorizontal: 5, // Adds space between boxes
-    borderRadius: 5, // Optional: Adds rounded corners to boxes
-    overflow: 'hidden', // Ensure children are clipped to the border
+    height: 120,
+    width: 101,
+    marginHorizontal: 5,
+    borderRadius: 5,
+    overflow: 'hidden',
+    alignItems: 'center',
+    backgroundColor: "white",
   },
   boxImage: {
-    height: '100%',
+    height: '80%',
     width: '100%',
+    borderRadius: 5,
+  },
+  textContainer: {
+    height: '20%',
     justifyContent: 'center',
     alignItems: 'center',
   },
   boxText: {
     color: 'black',
     fontWeight: 'bold',
-    position: 'absolute',
-    marginTop:60,
-    marginLeft:10 // Position the text over the image
+    marginTop: -12,
   },
 });
 

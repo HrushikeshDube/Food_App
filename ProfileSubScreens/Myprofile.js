@@ -83,7 +83,7 @@ const ProfileScreen = () => {
 
   return (
     <View style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
           <Image
             style={styles.avatar}

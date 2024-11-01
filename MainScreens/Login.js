@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ImageBackground, Image, ToastAndroid, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import auth from '@react-native-firebase/auth';
 
 const Login = () => {
@@ -9,6 +11,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [passwordVisible, setPasswordVisible] = useState(false); // New state for password visibility
 
   useEffect(() => {
     const unsubscribe = auth().onAuthStateChanged(user => {
@@ -61,13 +64,18 @@ const Login = () => {
           value={email}
           onChangeText={setEmail}
         />
-        <TextInput
-          style={styles.input}
-          placeholder="Password"
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry
-        />
+        <View style={styles.passwordContainer}>
+          <TextInput
+            style={styles.inputPassword}
+            placeholder="Password"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry={!passwordVisible} // Toggle secureTextEntry based on passwordVisible state
+          />
+          <TouchableOpacity onPress={() => setPasswordVisible(!passwordVisible)}>
+            <FontAwesomeIcon icon={passwordVisible ? faEye : faEyeSlash} size={20} color="gray" />
+          </TouchableOpacity>
+        </View>
         <View style={styles.optionsRow}>
           <TouchableOpacity
             style={styles.checkboxContainer}
@@ -105,7 +113,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#ffffff', // Background color for loading screen
+    backgroundColor: '#ffffff',
   },
   pic: {
     height: 200,
@@ -132,6 +140,21 @@ const styles = StyleSheet.create({
     borderBottomColor: 'gray',
     borderBottomWidth: 1,
     marginBottom: 15,
+    paddingHorizontal: 10,
+    borderRadius: 5,
+    backgroundColor: 'transparent',
+  },
+  passwordContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '100%',
+    borderBottomColor: 'gray',
+    borderBottomWidth: 1,
+    marginBottom: 15,
+  },
+  inputPassword: {
+    flex: 1,
+    height: 40,
     paddingHorizontal: 10,
     borderRadius: 5,
     backgroundColor: 'transparent',

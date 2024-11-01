@@ -18,6 +18,12 @@ import Paymentsetting from './ProfileSubScreens/Paymentsetting';
 import Notifications from './ProfileSubScreens/Notifications';
 import Aboutus from './ProfileSubScreens/Aboutus';
 import Myprofile from './ProfileSubScreens/Myprofile';
+import Breakfast from './ScreensMenu/Breakfast';
+import Bhaji from './ScreensMenu/Bhaji';
+import Roti from './ScreensMenu/Roti';
+import Rice from './ScreensMenu/Rice';
+import Desert from './ScreensMenu/Desert';
+import Drink from './ScreensMenu/Drink';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -28,7 +34,7 @@ const Tabnavigation = () => {
       screenOptions={{
         tabBarHideOnKeyboard: true,
         tabBarActiveTintColor: '#FF5733',
-        tabBarShowLabel: false,
+        tabBarShowLabel: false, 
         tabBarStyle: {
           position: 'absolute',
           bottom: 10,
@@ -157,6 +163,12 @@ function App() {
               backgroundColor: '#f5f5f5', 
             },
           }}/>
+          <Stack.Screen name="Breakfast" component={Breakfast} />
+          <Stack.Screen name="Bhaji" component={Bhaji} />
+          <Stack.Screen name="Roti" component={Roti} />
+          <Stack.Screen name="Rice" component={Rice} />
+          <Stack.Screen name="Desert" component={Desert} />
+          <Stack.Screen name="Drink" component={Drink} />
       </Stack.Navigator>
     </NavigationContainer>
   );
