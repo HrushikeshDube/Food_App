@@ -1,30 +1,21 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import React, { useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
 
 const Welcome = () => {
   const navigation = useNavigation();
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const unsubscribe = auth().onAuthStateChanged(user => {
       if (user) {
-        navigation.replace('Tabnavigation'); 
-      } else {
-        setLoading(false); // Show Welcome screen if not logged in
+        navigation.replace('Tabnavigation'); // Navigate to Tabnavigation if user is logged in
       }
+      // If the user is not logged in, the welcome screen will be displayed
     });
-    return unsubscribe;
-  }, [navigation]);
 
-  if (loading) {
-    return (
-      <View style={styles.loaderContainer}>
-        <ActivityIndicator size="large" color="#FF5733" />
-      </View>
-    );
-  }
+    return unsubscribe; // Cleanup subscription on unmount
+  }, [navigation]);
 
   return (
     <View style={styles.container}>
@@ -42,12 +33,6 @@ export default Welcome;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    backgroundColor: '#FF5733',
-  },
-  loaderContainer: {
-    flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#FF5733',
   },

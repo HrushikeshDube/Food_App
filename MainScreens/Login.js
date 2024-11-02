@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ImageBackground, Image, ToastAndroid, ActivityIndicator } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ImageBackground, Image, ToastAndroid, ActivityIndicator, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
@@ -10,34 +10,35 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [passwordVisible, setPasswordVisible] = useState(false); // New state for password visibility
+  const [loading, setLoading] = useState(true); // Keep loading state to show loader
+  const [passwordVisible, setPasswordVisible] = useState(false);
 
   useEffect(() => {
     const unsubscribe = auth().onAuthStateChanged(user => {
       if (user) {
-        navigation.replace('Tabnavigation', { userEmail: user.email }); 
+        navigation.replace('Tabnavigation', { userEmail: user.email });
       }
-      setLoading(false); // Stop showing the loader once auth check is done
+      setLoading(false); // Set loading to false after checking auth state
     });
-    return unsubscribe;
+
+    return unsubscribe; // Cleanup subscription on unmount
   }, [navigation]);
 
   const handleLogin = () => {
-    setLoading(true); // Show loader during login
+    setLoading(true); // Show loader while logging in
     auth()
       .signInWithEmailAndPassword(email, password)
       .then(() => {
         ToastAndroid.show('Successfully Logged In', ToastAndroid.SHORT);
         setEmail('');
         setPassword('');
-        navigation.replace('Tabnavigation', { userEmail: email }); // Pass email to Tabnavigation
+        navigation.replace('Tabnavigation', { userEmail: email });
       })
       .catch(() => {
         ToastAndroid.show('Invalid Credentials', ToastAndroid.SHORT);
       })
       .finally(() => {
-        setLoading(false); // Stop loader after login attempt
+        setLoading(false); // Hide loader after login attempt
       });
   };
 
@@ -55,50 +56,52 @@ const Login = () => {
       style={styles.container}
       resizeMode="cover"
     >
-      <View style={styles.box}>
-        <Image source={require('../Assests/SAMOSA.png')} style={styles.pic} />
-        <Text style={styles.logintext}>LOGIN</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Email"
-          value={email}
-          onChangeText={setEmail}
-        />
-        <View style={styles.passwordContainer}>
+      <ScrollView contentContainerStyle={styles.scrollContainer} keyboardShouldPersistTaps="handled">
+        <View style={styles.box}>
+          <Image source={require('../Assests/SAMOSA.png')} style={styles.pic} />
+          <Text style={styles.logintext}>LOGIN</Text>
           <TextInput
-            style={styles.inputPassword}
-            placeholder="Password"
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry={!passwordVisible} // Toggle secureTextEntry based on passwordVisible state
+            style={styles.input}
+            placeholder="Email"
+            value={email}
+            onChangeText={setEmail}
           />
-          <TouchableOpacity onPress={() => setPasswordVisible(!passwordVisible)}>
-            <FontAwesomeIcon icon={passwordVisible ? faEye : faEyeSlash} size={20} color="gray" />
+          <View style={styles.passwordContainer}>
+            <TextInput
+              style={styles.inputPassword}
+              placeholder="Password"
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry={!passwordVisible}
+            />
+            <TouchableOpacity onPress={() => setPasswordVisible(!passwordVisible)}>
+              <FontAwesomeIcon icon={passwordVisible ? faEye : faEyeSlash} size={20} color="gray" />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.optionsRow}>
+            <TouchableOpacity
+              style={styles.checkboxContainer}
+              onPress={() => setRememberMe(!rememberMe)}
+            >
+              <View style={[styles.checkbox, rememberMe && styles.checkboxChecked]}>
+                {rememberMe && <Text style={styles.checkmark}>✓</Text>}
+              </View>
+              <Text style={styles.rememberMeText}>Remember Me</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
+              <Text style={styles.forgotText}>Forgot Password?</Text>
+            </TouchableOpacity>
+          </View>
+          <TouchableOpacity style={styles.button} onPress={handleLogin} activeOpacity={0.5}>
+            <Text style={styles.buttonText}>Login</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('Register')} activeOpacity={0.5}>
+            <Text style={styles.title}>
+              New User? <Text style={styles.signupText}>Sign Up</Text>
+            </Text>
           </TouchableOpacity>
         </View>
-        <View style={styles.optionsRow}>
-          <TouchableOpacity
-            style={styles.checkboxContainer}
-            onPress={() => setRememberMe(!rememberMe)}
-          >
-            <View style={[styles.checkbox, rememberMe && styles.checkboxChecked]}>
-              {rememberMe && <Text style={styles.checkmark}>✓</Text>}
-            </View>
-            <Text style={styles.rememberMeText}>Remember Me</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
-            <Text style={styles.forgotText}>Forgot Password?</Text>
-          </TouchableOpacity>
-        </View>
-        <TouchableOpacity style={styles.button} onPress={handleLogin} activeOpacity={0.5}>
-          <Text style={styles.buttonText}>Login</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('Register')} activeOpacity={0.5}>
-          <Text style={styles.title}>
-            New User? <Text style={styles.signupText}>Sign Up</Text>
-          </Text>
-        </TouchableOpacity>
-      </View>
+      </ScrollView>
     </ImageBackground>
   );
 };
@@ -106,6 +109,9 @@ const Login = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  scrollContainer: {
+    flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -122,7 +128,6 @@ const styles = StyleSheet.create({
   },
   box: {
     width: "90%",
-    height: "60%",
     borderRadius: 10,
     padding: 20,
     alignItems: 'center',
