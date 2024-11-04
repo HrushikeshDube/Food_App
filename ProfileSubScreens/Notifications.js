@@ -30,7 +30,7 @@ const Notifications = () => {
 
           if (hoursDiff < 24) {
             recent.push(notification); // Less than 24 hours
-          } else if (hoursDiff > 24 && hoursDiff < 48) {
+          } else if (hoursDiff >= 24 && hoursDiff < 48) {
             yesterday.push(notification); // Between 24 and 48 hours
           } else {
             // Delete notification from Firestore if older than 48 hours
@@ -70,22 +70,26 @@ const Notifications = () => {
 
   return (
     <View style={styles.container}>
-      <FlatList
-        data={notifications}
-        renderItem={({ item }) => (
-          item.data.length > 0 ? (
-            <FlatList
-              data={item.data}
-              renderItem={renderItem}
-              keyExtractor={(notification) => notification.id}
-              ListHeaderComponent={renderSectionHeader({ section: item })}
-              ListEmptyComponent={<Text style={styles.emptyText}>No notifications available</Text>}
-            />
-          ) : null
-        )}
-        keyExtractor={(item, index) => index.toString()}
-        ListEmptyComponent={<Text style={styles.emptyText}>No notifications available</Text>}
-      />
+      {notifications.every((section) => section.data.length === 0) ? ( // Check if all sections are empty
+        <View style={styles.centeredContainer}>
+          <Text style={styles.emptyText}>No notifications today</Text>
+        </View>
+      ) : (
+        <FlatList
+          data={notifications}
+          renderItem={({ item }) => (
+            item.data.length > 0 ? (
+              <FlatList
+                data={item.data}
+                renderItem={renderItem}
+                keyExtractor={(notification) => notification.id}
+                ListHeaderComponent={renderSectionHeader({ section: item })}
+              />
+            ) : null
+          )}
+          keyExtractor={(item, index) => index.toString()}
+        />
+      )}
     </View>
   );
 };
@@ -94,9 +98,14 @@ export default Notifications;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1, // Allow the container to fill the screen
+    flex: 1,
+    backgroundColor: '#fff',
     padding: 16,
-    backgroundColor: '#fff', // Set the desired background color for the entire screen
+  },
+  centeredContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   sectionTitle: {
     fontSize: 18,
@@ -107,14 +116,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     padding: 12,
-    marginVertical: 4, 
+    marginVertical: 4,
     backgroundColor: '#f9f9f9',
     borderRadius: 8,
   },
   iconContainer: {
-    backgroundColor: '#fff', 
+    backgroundColor: '#fff',
     padding: 8,
-    borderRadius: 50, // Circular shape
+    borderRadius: 50,
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 12,
@@ -133,8 +142,7 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     textAlign: 'center',
-    fontSize: 16,
-    color: '#888',
-    marginTop: 20,
+    fontSize: 20,
+    color: 'gray',
   },
 });

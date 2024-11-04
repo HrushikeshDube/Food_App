@@ -24,6 +24,10 @@ import Roti from './ScreensMenu/Roti';
 import Rice from './ScreensMenu/Rice';
 import Desert from './ScreensMenu/Desert';
 import Drink from './ScreensMenu/Drink';
+import Dal from './ScreensMenu/Dal';
+import Starter from './ScreensMenu/Starter';
+import ThingsmustTry from './ScreensMenu/ThingsmustTry';
+import Itemdesc from './MainScreens/Itemdesc';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -169,6 +173,10 @@ function App() {
           <Stack.Screen name="Rice" component={Rice} />
           <Stack.Screen name="Desert" component={Desert} />
           <Stack.Screen name="Drink" component={Drink} />
+          <Stack.Screen name="Dal" component={Dal} />
+          <Stack.Screen name="Starter" component={Starter} />
+          <Stack.Screen name="Thingsmusttry" component={ThingsmustTry} />
+          <Stack.Screen name="Itemdesc" component={Itemdesc} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -6,17 +6,17 @@ import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import { useNavigation } from '@react-navigation/native';
 
-const Drink = () => {
-  const [DrinkItems, setDrinkItems] = useState([]);
+const Starter = () => {
+  const [StarterItems, setStarterItems] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const navigation = useNavigation();
 
   useEffect(() => {
-    const fetchDrink = async () => {
+    const fetchStarter = async () => {
       try {
-        const snapshot = await firestore().collection('Drinks').get();
+        const snapshot = await firestore().collection('Starter').get();
         const items = snapshot.docs.map(doc => {
           const data = doc.data();
           return {
@@ -27,27 +27,27 @@ const Drink = () => {
             Description: data.Description || "No description available",
           };
         });
-        setDrinkItems(items);
+        setStarterItems(items);
         setFilteredItems(items);
       } catch (error) {
-        console.error("Error fetching Drink items:", error);
+        console.error("Error fetching Starter items:", error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchDrink();
+    fetchStarter();
   }, []);
 
   const handleSearch = (query) => {
     setSearchQuery(query);
     if (query) {
-      const filteredData = DrinkItems.filter(item => 
+      const filteredData = StarterItems.filter(item => 
         item.Foodname.toLowerCase().includes(query.toLowerCase())
       );
       setFilteredItems(filteredData);
     } else {
-      setFilteredItems(DrinkItems);
+      setFilteredItems(StarterItems);
     }
   };
 
@@ -67,7 +67,7 @@ const Drink = () => {
     }
   };
 
-  const renderDrinkItem = ({ item }) => {
+  const renderStarterItem = ({ item }) => {
     return (
       <TouchableOpacity style={styles.card} onPress={() => handleItemPress(item)}>
         {item.image && <Image source={{ uri: item.image }} style={styles.image} />}
@@ -105,7 +105,7 @@ const Drink = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Drink Menu</Text>
+      <Text style={styles.header}>Starter Menu</Text>
       <View style={styles.searchContainer}>
         <TextInput
           style={styles.searchInput}
@@ -123,7 +123,7 @@ const Drink = () => {
       ) : (
         <FlatList
           data={dataWithPlaceholders}
-          renderItem={item => item.item.empty ? renderPlaceholder() : renderDrinkItem(item)}
+          renderItem={item => item.item.empty ? renderPlaceholder() : renderStarterItem(item)}
           keyExtractor={(item, index) => item.empty ? index.toString() : item.id}
           numColumns={2}
           contentContainerStyle={styles.list}
@@ -133,7 +133,7 @@ const Drink = () => {
   );
 };
 
-export default Drink;
+export default Starter;
 
 const styles = StyleSheet.create({
   container: {

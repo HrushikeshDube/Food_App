@@ -2,18 +2,21 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity, ActivityIndicator, TextInput } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faPlus, faSearch } from '@fortawesome/free-solid-svg-icons';
-import firestore from '@react-native-firebase/firestore'; // Ensure this import is correct
+import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
+import { useNavigation } from '@react-navigation/native';
 
 const Breakfast = () => {
   const [breakfastItems, setBreakfastItems] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
-  const [loading, setLoading] = useState(true); // State to manage loading
-  const [searchQuery, setSearchQuery] = useState(''); // State for search input
+  const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
+  const navigation = useNavigation();
 
   useEffect(() => {
     const fetchBreakfast = async () => {
       try {
-        const snapshot = await firestore().collection('Breakfast').get(); // Fetch from Breakfast collection
+        const snapshot = await firestore().collection('Breakfast').get();
         const items = snapshot.docs.map(doc => {
           const data = doc.data();
           return {
@@ -21,14 +24,15 @@ const Breakfast = () => {
             Foodname: data.Foodname || "Unknown Item",
             Price: data.Price || "N/A",
             image: data.image || null,
+            Description: data.Description || "No description available",
           };
         });
-        setBreakfastItems(items); // Set fetched items in state
-        setFilteredItems(items); // Initialize filtered items
+        setBreakfastItems(items);
+        setFilteredItems(items);
       } catch (error) {
         console.error("Error fetching breakfast items:", error);
       } finally {
-        setLoading(false); // Stop loading regardless of success or failure
+        setLoading(false);
       }
     };
 
@@ -43,24 +47,48 @@ const Breakfast = () => {
       );
       setFilteredItems(filteredData);
     } else {
-      setFilteredItems(breakfastItems); // Reset to original list if search is empty
+      setFilteredItems(breakfastItems);
     }
   };
 
-  const renderBreakfastItem = ({ item }) => (
-    <View style={styles.card}>
-      {item.image && <Image source={{ uri: item.image }} style={styles.image} />}
-      <View style={styles.infoContainer}>
-        <Text style={styles.itemName}>{item.Foodname}</Text>
-        <View style={styles.priceContainer}>
-          <Text style={styles.itemPrice}>₹ {item.Price}</Text>
-          <TouchableOpacity style={styles.addButton}>
-            <FontAwesomeIcon icon={faPlus} size={20} color="#FF5733" />
-          </TouchableOpacity>
+  const handleItemPress = (item) => {
+    const user = auth().currentUser;
+    if (user) {
+      navigation.navigate('Itemdesc', {
+        userId: user.uid,
+        itemId: item.id,
+        Foodname: item.Foodname,
+        Price: item.Price,
+        image: item.image,
+        desc: item.Description,
+      });
+    } else {
+      console.error("User not logged in");
+    }
+  };
+
+  const renderBreakfastItem = ({ item }) => {
+    return (
+      <TouchableOpacity style={styles.card} onPress={() => handleItemPress(item)}>
+        {item.image && <Image source={{ uri: item.image }} style={styles.image} />}
+        <View style={styles.infoContainer}>
+          <Text style={styles.itemName}>{item.Foodname}</Text>
+          <View style={styles.priceContainer}>
+            <Text style={styles.itemPrice}>₹ {item.Price}</Text>
+            <TouchableOpacity style={styles.addButton} onPress={() => handleItemPress(item)}>
+              <FontAwesomeIcon icon={faPlus} size={20} color="#FF5733" />
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-    </View>
-  );
+      </TouchableOpacity>
+    );
+  };
+
+  const renderPlaceholder = () => {
+    return (
+      <View style={[styles.card, styles.invisibleCard]} />
+    );
+  };
 
   if (loading) {
     return (
@@ -71,6 +99,10 @@ const Breakfast = () => {
     );
   }
 
+  // Calculate the number of placeholders needed for an even layout
+  const numPlaceholders = filteredItems.length % 2 === 1 ? 1 : 0;
+  const dataWithPlaceholders = [...filteredItems, ...Array(numPlaceholders).fill({ empty: true })];
+
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Breakfast Menu</Text>
@@ -79,20 +111,21 @@ const Breakfast = () => {
           style={styles.searchInput}
           placeholder="Search"
           value={searchQuery}
-          onChangeText={handleSearch} // Update search input
+          onChangeText={handleSearch}
         />
         <TouchableOpacity style={styles.filterButton}>
           <FontAwesomeIcon icon={faSearch} size={20} color="#FF5733" />
         </TouchableOpacity>
       </View>
-      {filteredItems.length === 0 ? ( // Check if no items found
+      <Text style={styles.noteText}>Note: You can increase the quantity in the cart</Text>
+      {filteredItems.length === 0 ? (
         <Text style={styles.noContentText}>No related content found.</Text>
       ) : (
         <FlatList
-          data={filteredItems}
-          renderItem={renderBreakfastItem}
-          keyExtractor={item => item.id}
-          numColumns={2} // Display items in two columns
+          data={dataWithPlaceholders}
+          renderItem={item => item.item.empty ? renderPlaceholder() : renderBreakfastItem(item)}
+          keyExtractor={(item, index) => item.empty ? index.toString() : item.id}
+          numColumns={2}
           contentContainerStyle={styles.list}
         />
       )}
@@ -171,19 +204,19 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   priceContainer: {
-    flexDirection: 'row', // Arrange children in a row
-    alignItems: 'center', // Center items vertically
-    marginTop: 8, // Add margin as needed
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 8,
   },
   itemPrice: {
     fontSize: 16,
     color: '#777',
-    marginRight: 10, // Space between price and button
+    marginRight: 10,
   },
   addButton: {
     padding: 5,
     backgroundColor: "white",
-    borderRadius: 20, // Fully circular shape
+    borderRadius: 20,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -191,7 +224,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 4,
-    elevation: 5, // For Android shadow
+    elevation: 5,
     borderWidth: 1,
     borderColor: "#FF5733"
   },
@@ -204,5 +237,15 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontSize: 18,
     color: '#FF5733',
+  },
+  invisibleCard: {
+    backgroundColor: 'transparent',
+    shadowColor: 'transparent',
+  },
+  noteText: {
+    fontSize: 14,
+    color: '#777',
+    textAlign: 'center',
+    marginVertical: 5,
   },
 });
