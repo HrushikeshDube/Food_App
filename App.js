@@ -140,7 +140,7 @@ function App() {
               backgroundColor: '#f5f5f5', 
             },
           }}/>
-        <Stack.Screen name="Paymentsetting" component={Paymentsetting} options={{
+        {/* <Stack.Screen name="Paymentsetting" component={Paymentsetting} options={{
             title: 'Payment',
             headerShown: true, 
             headerBackTitleVisible: false, 
@@ -148,7 +148,7 @@ function App() {
             headerStyle: {
               backgroundColor: '#f5f5f5', 
             },
-          }}/>
+          }}/> */}
         <Stack.Screen name="Notifications" component={Notifications} options={{
             title: 'Notifications',
             headerShown: true, 

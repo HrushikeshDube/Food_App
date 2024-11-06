@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet, ToastAndroid } from 'react-native';
+import { View, Text, Image, TouchableOpacity, StyleSheet, ToastAndroid, TextInput } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
@@ -9,6 +9,7 @@ const ItemDesc = ({ route }) => {
   const { itemId, Foodname = null, Price = "10", image = null, desc = "Delicious Food with fresh ingredients" } = route.params;
   const [quantity, setQuantity] = useState(1);
   const [isWishlisted, setIsWishlisted] = useState(false);
+  const [additionalNotes, setAdditionalNotes] = useState('');
 
   const handleAddToCart = async () => {
     const user = auth().currentUser;
@@ -23,6 +24,7 @@ const ItemDesc = ({ route }) => {
           Price,
           image,
           quantity,
+          additionalNotes,  // add the additional notes field here
         });
       ToastAndroid.show('Added to Cart', ToastAndroid.SHORT);
     } else {
@@ -89,6 +91,14 @@ const ItemDesc = ({ route }) => {
 
         <Text style={styles.descriptionLabel}>Description:</Text>
         <Text style={styles.description}>{desc}</Text>
+
+        <TextInput
+          style={styles.input}
+          placeholder="Add-ons or special instructions"
+          placeholderTextColor="#888"
+          value={additionalNotes}
+          onChangeText={setAdditionalNotes}
+        />
 
         <TouchableOpacity onPress={handleAddToCart} style={styles.addToCartButton}>
           <FontAwesomeIcon icon={faCartPlus} size={20} color="#fff" style={{ marginRight: 10 }} />
@@ -178,6 +188,15 @@ const styles = StyleSheet.create({
     color: '#666',
     marginVertical: 10,
     textAlign: 'center',
+  },
+  input: {
+    width: '100%',
+    padding: 10,
+    borderColor: '#ddd',
+    borderWidth: 1,
+    borderRadius: 10,
+    marginVertical: 10,
+    color: '#333',
   },
   addToCartButton: { 
     marginTop: 20, 

@@ -107,7 +107,7 @@ const Profile = ({ navigation }) => {
           {[
             { title: 'My Profile', icon: faUser, screen: 'Myprofile' },
             { title: 'Change Password', icon: faLock, screen: 'Changepassword' },
-            { title: 'Payment Settings', icon: faCreditCard, screen: 'Paymentsetting' },
+            // { title: 'Payment Settings', icon: faCreditCard, screen: 'Paymentsetting' },
             { title: 'Notification', icon: faBell, screen: 'Notifications' },
             { title: 'About Us', icon: faInfoCircle, screen: 'Aboutus' },
           ].map((option, index) => (

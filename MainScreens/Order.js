@@ -63,11 +63,11 @@ const Order = () => {
       }
     }
   };
-
+  const logo = Image.resolveAssetSource(require('../Assests/Logo1.png')).uri;
   const Paymentrazor = ()=>{
     var options = {
       description: 'Credits towards consultation',
-      image: 'https://i.imgur.com/3g7nmJC.jpg',
+      image: logo,
       currency: 'INR',
       key: 'rzp_test_fCrVfSNDHgd0B3',
       amount:  totalAmount * 100,
@@ -94,6 +94,12 @@ const Order = () => {
       <View style={styles.details}>
         <Text style={styles.name}>{item.Foodname}</Text>
         <Text style={styles.price}>₹ {item.Price}</Text>
+        {item.additionalNotes ? (
+        <View style={styles.noteContainer}>
+          <Text style={styles.noteLabel}>Note:</Text>
+          <Text style={styles.noteText}>{item.additionalNotes}</Text>
+        </View>
+      ) : null}
       </View>
       <View style={styles.quantityContainer}>
         <TouchableOpacity onPress={() => updateQuantity(item.id, item.quantity - 1)}>
@@ -239,5 +245,19 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 18,
     fontWeight: '600',
+  },
+  noteContainer: {
+    padding: 8,
+   
+  },
+  noteLabel: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: '#FF5733',
+  },
+  noteText: {
+    fontSize: 14,
+    color: '#333',
+    marginTop: 4,
   },
 });

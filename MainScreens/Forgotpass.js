@@ -1,6 +1,6 @@
 // ForgotPassword.js
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ToastAndroid } from 'react-native';
+import React, { useState,useEffect } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ToastAndroid , BackHandler} from 'react-native';
 import auth from '@react-native-firebase/auth';
 
 const ForgotPassword = ({ navigation }) => {
@@ -18,7 +18,16 @@ const ForgotPassword = ({ navigation }) => {
         ToastAndroid.show('Error: ' + error.message, ToastAndroid.SHORT);
       });
   };
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+      navigation.navigate('Login'); // Navigate to Login screen on back press
+      return true; // Prevent default back behavior (exit app)
+    });
 
+    return () => {
+      backHandler.remove(); // Cleanup back handler on component unmount
+    };
+  }, [navigation]);
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Forgot Password</Text>

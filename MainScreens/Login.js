@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ImageBackground, Image, ToastAndroid, ActivityIndicator, ScrollView } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ImageBackground, Image, ToastAndroid, ActivityIndicator, ScrollView, BackHandler } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
@@ -10,24 +10,44 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
-  const [loading, setLoading] = useState(true); // Set loading initially to true
+  const [loading, setLoading] = useState(true);
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const [backPressCount, setBackPressCount] = useState(0);
 
   useEffect(() => {
     const unsubscribe = auth().onAuthStateChanged(user => {
       if (user) {
-        // If user is logged in, navigate immediately and keep loader visible
         navigation.replace('Tabnavigation', { userEmail: user.email });
       } else {
-        setLoading(false); // Set loading to false if no user is logged in
+        setLoading(false);
       }
     });
 
-    return unsubscribe; // Cleanup subscription on unmount
-  }, [navigation]);
+    // Handle double back press for exit
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+      if (backPressCount === 0) {
+        setBackPressCount(1);
+        ToastAndroid.show('Press again to exit', ToastAndroid.SHORT);
+        
+        setTimeout(() => {
+          setBackPressCount(0);
+        }, 2000); // Reset back press count after 2 seconds
+
+        return true; // Prevent default back behavior
+      } else if (backPressCount === 1) {
+        BackHandler.exitApp();
+        return true;
+      }
+    });
+
+    return () => {
+      unsubscribe();
+      backHandler.remove();
+    };
+  }, [navigation, backPressCount]);
 
   const handleLogin = () => {
-    setLoading(true); // Show loader while logging in
+    setLoading(true);
     auth()
       .signInWithEmailAndPassword(email, password)
       .then(() => {
@@ -40,7 +60,7 @@ const Login = () => {
         ToastAndroid.show('Invalid Credentials', ToastAndroid.SHORT);
       })
       .finally(() => {
-        setLoading(false); // Hide loader if login fails
+        setLoading(false);
       });
   };
 
