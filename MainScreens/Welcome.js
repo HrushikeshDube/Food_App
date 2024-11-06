@@ -1,26 +1,37 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
-import React, { useEffect } from 'react';
+import { StyleSheet, Text, View, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
 
 const Welcome = () => {
   const navigation = useNavigation();
+  const [loading, setLoading] = useState(true); // State to manage loading status
 
   useEffect(() => {
     const unsubscribe = auth().onAuthStateChanged(user => {
       if (user) {
         navigation.replace('Tabnavigation'); // Navigate to Tabnavigation if user is logged in
+      } else {
+        setLoading(false); // Stop loading if user is not logged in
       }
-      // If the user is not logged in, the welcome screen will be displayed
     });
 
-    return unsubscribe; // Cleanup subscription on unmount
+    return unsubscribe; 
   }, [navigation]);
+
+  if (loading) {
+    // Show a loader if checking the user's authentication state
+    return (
+      <View style={styles.loaderContainer}>
+        <ActivityIndicator size="large" color="#FF5733" />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>FOODIEE</Text>
-      <Image source={require('../Assests/food.png')} style={styles.image} />
+      <Image source={require('../Assests/Logo1.png')} style={styles.image} />
       <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Login')} activeOpacity={0.5}>
         <Text style={styles.buttonText}>Get Started</Text>
       </TouchableOpacity>
@@ -34,7 +45,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: '#FF5733',
+    backgroundColor: '#FFF',
+  },
+  loaderContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#FF5733', // Orange background
   },
   image: {
     width: '80%',
@@ -42,17 +59,17 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginBottom: 50,
     marginTop: 30,
-    marginLeft: 25,
+    marginRight: 70
   },
   title: {
     fontSize: 32,
     fontWeight: 'bold',
-    color: '#FFFFFF',
+    color: '#FF5733', // Adjusted color to match theme
     marginBottom: 20,
     marginTop: 30,
   },
   button: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#FF5733',
     padding: 15,
     borderRadius: 10,
     width: '90%',
@@ -61,6 +78,6 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#FF5733',
+    color: '#FFF',
   },
 });

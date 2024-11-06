@@ -10,15 +10,17 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
-  const [loading, setLoading] = useState(true); // Keep loading state to show loader
+  const [loading, setLoading] = useState(true); // Set loading initially to true
   const [passwordVisible, setPasswordVisible] = useState(false);
 
   useEffect(() => {
     const unsubscribe = auth().onAuthStateChanged(user => {
       if (user) {
+        // If user is logged in, navigate immediately and keep loader visible
         navigation.replace('Tabnavigation', { userEmail: user.email });
+      } else {
+        setLoading(false); // Set loading to false if no user is logged in
       }
-      setLoading(false); // Set loading to false after checking auth state
     });
 
     return unsubscribe; // Cleanup subscription on unmount
@@ -38,7 +40,7 @@ const Login = () => {
         ToastAndroid.show('Invalid Credentials', ToastAndroid.SHORT);
       })
       .finally(() => {
-        setLoading(false); // Hide loader after login attempt
+        setLoading(false); // Hide loader if login fails
       });
   };
 
@@ -119,7 +121,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#ffffff',
+    backgroundColor: '#FFF',
   },
   pic: {
     height: 200,

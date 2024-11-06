@@ -84,7 +84,7 @@ const Order = () => {
       ToastAndroid.show('Successfull Payment', ToastAndroid.SHORT);
     }).catch((error) => {
       // handle failure
-      alert(`Error: ${error.code} | ${error.description}`);
+      ToastAndroid.show('Transaction Cancelled', ToastAndroid.SHORT);
     });
   }
 

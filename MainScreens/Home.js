@@ -235,40 +235,44 @@ const Home = () => {
           </ScrollView>
         </View>
         <View style={styles.stodaysspecialbox}>
-          <Text style={styles.ssectext}>Things You Must Try!</Text>
-          <Text style={styles.ssecsubtext}>Don't miss out on these mouth-watering dishes.</Text>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.sboxContainer}>
-            {thingstryitem.slice(0, 3).map((item, index) => (
-              <TouchableOpacity
-                key={index}
-                style={styles.todaybox}
-                activeOpacity={0.9}
-                onPress={() => navigation.navigate('Itemdesc', {
-                  Foodname: item.Foodname,
-                  Price: item.Price,
-                  image: item.image,
-                  description: item.Description
-                })}
-              >
-                <Image source={{ uri: item.image }} style={styles.spboxImage} />
-                <View style={styles.textsign}>
-                  <View style={styles.sptextContainer}>
-                    <Text style={styles.spboxText}>{item.Foodname}</Text>
-                    <Text style={styles.spboxText}>₹ {item.Price}</Text>
-                  </View>
-                  <TouchableOpacity activeOpacity={0.5} style={styles.addText} onPress={() => navigation.navigate('Itemdesc', {
-                    Foodname: item.Foodname,
-                    Price: item.Price,
-                    image: item.image,
-                    description: item.Description
-                  })}>
-                    <FontAwesomeIcon icon={faPlus} size={20} color={"#FF5733"} />
-                  </TouchableOpacity>
-                </View>
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
+  <Text style={styles.ssectext}>Things You Must Try!</Text>
+  <Text style={styles.ssecsubtext}>Don't miss out on these mouth-watering dishes.</Text>
+  <TouchableOpacity style={styles.arrowButton} onPress={() => navigation.navigate('Thingsmusttry')}>
+    <FontAwesomeIcon icon={faArrowRight} size={20} color={"#FF5733"} />
+  </TouchableOpacity>
+  <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.sboxContainer}>
+    {thingstryitem.slice(0, 3).map((item, index) => (
+      <TouchableOpacity
+        key={index}
+        style={styles.todaybox}
+        activeOpacity={0.9}
+        onPress={() => navigation.navigate('Itemdesc', {
+          Foodname: item.Foodname,
+          Price: item.Price,
+          image: item.image,
+          description: item.Description
+        })}
+      >
+        <Image source={{ uri: item.image }} style={styles.spboxImage} />
+        <View style={styles.textsign}>
+          <View style={styles.sptextContainer}>
+            <Text style={styles.spboxText}>{item.Foodname}</Text>
+            <Text style={styles.spboxText}>₹ {item.Price}</Text>
+          </View>
+          <TouchableOpacity activeOpacity={0.5} style={styles.addText} onPress={() => navigation.navigate('Itemdesc', {
+            Foodname: item.Foodname,
+            Price: item.Price,
+            image: item.image,
+            description: item.Description
+          })}>
+            <FontAwesomeIcon icon={faPlus} size={20} color={"#FF5733"} />
+          </TouchableOpacity>
         </View>
+      </TouchableOpacity>
+    ))}
+  </ScrollView>
+</View>
+
       </ScrollView>
     </SafeAreaView>
   );
@@ -455,7 +459,16 @@ const styles = StyleSheet.create({
     marginRight: 0,  // Changed to orange as requested
   },
   stodaysspecialbox: {
-    paddingBottom: 100
+    marginBottom: 20,
+    position: 'relative', 
+    marginBottom:100// Make sure the parent view is positioned
+  },
+  arrowButton: {
+    position: 'absolute', // Position it absolutely
+    right: 15, // Adjust this value as needed
+    top: 15, // Adjust this value as needed
+    backgroundColor: 'transparent', // Make the background transparent
+    padding: 5, // Add some padding for better touch response
   },
   todaybox: {
     height: 290,

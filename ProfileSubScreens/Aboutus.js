@@ -8,7 +8,7 @@ const AboutUs = () => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Image source={require('../Assests/food.png')} style={styles.logo} />
+      <Image source={require('../Assests/Logo1.png')} style={styles.logo} />
       
       <Text style={styles.title}>About Us</Text>
       
@@ -45,8 +45,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logo: {
-    width: 120,
-    height: 120,
+    width: 160,
+    height: 160,
     borderRadius: 60,
     marginVertical: 20,
   },
