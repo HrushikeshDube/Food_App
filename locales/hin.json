@@ -1,0 +1,62 @@
+{
+    "welcome_message": "आपका अगला भोजन बस एक टैप दूर है!",
+    "menu_categories": "श्रेणियाँ",
+    "category_breakfast": "नाश्ता",
+    "category_starters": "स्टार्टर्स",
+    "category_bhaji": "भाजी",
+    "category_rotis_dals": "रोटी और दाल",
+    "category_rice": "चावल",
+    "category_desserts": "मिठाई",
+    "category_drinks": "पेय",
+    "todays_special": "आज का खास",
+    "special_message": "आपका दिन खास बनाएगा।",
+    "things_to_try": "आपको इसे आजमाना चाहिए!",
+    "dont_miss_message": "इन स्वादिष्ट व्यंजनों को मिस न करें।",
+    "wishlist_label": "आपकी इच्छा सूची",
+    "wish-empty":"आपकी इच्छासूची खाली है।",
+    "cart_label": "कार्ट",
+    "cart-empty":"आपकी कार्ट खाली है।",
+    "profile_label": "मेरा प्रोफ़ाइल",
+    "change_password_label": "पासवर्ड बदलें",
+    "notifications_label": "सूचना",
+    "about_us_label": "हमारे बारे में",
+    "sign_out_label": "साइन आउट",
+    "change_photo_label": "फोटो बदलें",
+    "username_label": "मेरा नाम",
+    "phone_number_label": "फोन नंबर",
+    "email_label": "ई-मेल",
+    "address_label": "मेरा पता",
+    "reset_password_label": "रीसेट लिंक भेजें",
+    "registered_email_instruction": "अपना पंजीकृत ईमेल उपयोग करें",
+    "no_notifications_message": "आज कोई सूचनाएं नहीं हैं",
+    "save_button": "सहेजें",
+    "add_to_cart_button": "कार्ट में जोड़ें",
+    "welcomeMessage": "FoodOrder ऐप में आपका स्वागत है! हम आपको एक सहज भोजन अनुभव प्रदान करने के लिए समर्पित हैं, जिससे आप अपनी पसंदीदा रेस्तरां से सीधे अपनी मेज से ऑर्डर कर सकते हैं। FoodOrder के साथ, आप इंतजार छोड़ सकते हैं और बिना किसी परेशानी के, संपर्क रहित ऑर्डरिंग और भुगतान का आनंद ले सकते हैं।",
+    "ourMission": "हमारा मिशन ग्राहकों को रेस्तरां से सहजता से जोड़कर भोजन अनुभव में क्रांतिकारी बदलाव लाना है। हम सेवा की गति को बेहतर बनाने और मानव संपर्क को कम करने का लक्ष्य रखते हैं, जिससे आपका भोजन सुरक्षित, तेज और अधिक आनंदमयी हो सके।",
+    "contactUs": "किसी भी प्रश्न या सहायता के लिए, कृपया हमें संपर्क करें:",
+    "mission":"हमारा मिशन",
+    "cont":"संपर्क करें:",
+  
+
+
+    
+      "login": "लॉगिन",
+      "sign_up": "साइन अप करा",
+      "email": "ईमेल",
+      "password": "पासवर्ड",
+      "forgot_password": "पासवर्ड भूल गए",
+      "remember_me": "मुझे याद रखें",
+      "new_user": "नया उपयोगकर्ता ? ",
+      "mobile": "मोबाइल",
+      "address": "पता",
+      "already_registered": "पहले से पंजीकृत ? ",
+
+
+    "username": "उपयोगकर्ता नाम",
+    "mobile_number": "मोबाइल नंबर",
+    "register": "पंजीकरण करें",
+    "sign_in": "साइन इन करें"
+  
+  
+  }
+  

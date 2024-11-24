@@ -5,7 +5,11 @@ import auth from '@react-native-firebase/auth';
 import { faTrash, faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import RazorpayCheckout from 'react-native-razorpay';
+import i18n from "../services/i18next";
+import { useTranslation } from 'react-i18next';
+import LanguageSelector from '../components/langsel';
 const Order = () => {
+  const {t} = useTranslation();
   const [Cart, setCart] = useState([]);
   const [totalAmount, setTotalAmount] = useState(0);
 
@@ -118,13 +122,13 @@ const Order = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Cart</Text>
+      <Text style={styles.header}>{t('cart_label')}</Text>
       <FlatList
         data={Cart}
         keyExtractor={(item) => item.id}
         renderItem={renderItem}
         contentContainerStyle={Cart.length === 0 ? styles.emptyContainer : styles.list}
-        ListEmptyComponent={<Text style={styles.emptyMessage}>Your Cart is empty.</Text>}
+        ListEmptyComponent={<Text style={styles.emptyMessage}>{t('cart-empty')}</Text>}
       />
       {Cart.length > 0 && (
         <View style={styles.footer}>

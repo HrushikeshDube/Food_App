@@ -7,10 +7,13 @@ import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
 import firebase from '@react-native-firebase/app';
+import i18n from "../services/i18next";
+import { useTranslation } from 'react-i18next';
 
 const { width } = Dimensions.get('window');
 
 const Profile = ({ navigation }) => {
+  const {t} = useTranslation();
   const [userEmail, setUserEmail] = useState(null);
   const [userData, setUserData] = useState(null);
   const [initializing, setInitializing] = useState(true);
@@ -105,11 +108,11 @@ const Profile = ({ navigation }) => {
 
         <View style={styles.optionsContainer}>
           {[
-            { title: 'My Profile', icon: faUser, screen: 'Myprofile' },
-            { title: 'Change Password', icon: faLock, screen: 'Changepassword' },
+            { title: t('profile_label'), icon: faUser, screen: 'Myprofile' },
+            { title: t('change_password_label'), icon: faLock, screen: 'Changepassword' },
             // { title: 'Payment Settings', icon: faCreditCard, screen: 'Paymentsetting' },
-            { title: 'Notification', icon: faBell, screen: 'Notifications' },
-            { title: 'About Us', icon: faInfoCircle, screen: 'Aboutus' },
+            { title:t('notifications_label'), icon: faBell, screen: 'Notifications' },
+            { title: t('about_us_label'), icon: faInfoCircle, screen: 'Aboutus' },
           ].map((option, index) => (
             <TouchableOpacity
               key={index}
@@ -124,7 +127,7 @@ const Profile = ({ navigation }) => {
         </View>
 
         <TouchableOpacity style={styles.signOutButton} onPress={handleSignOut}>
-          <Text style={styles.signOutText}>Sign Out</Text>
+          <Text style={styles.signOutText}>{t('sign_out_label')}</Text>
         </TouchableOpacity>
       </ScrollView>
     </View>

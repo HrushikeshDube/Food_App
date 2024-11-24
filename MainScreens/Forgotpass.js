@@ -2,8 +2,10 @@
 import React, { useState,useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ToastAndroid , BackHandler} from 'react-native';
 import auth from '@react-native-firebase/auth';
-
+import i18n from "../services/i18next";
+import { useTranslation } from 'react-i18next';
 const ForgotPassword = ({ navigation }) => {
+  const {t} = useTranslation();
   const [email, setEmail] = useState('');
 
   const handlePasswordReset = () => {
@@ -30,7 +32,7 @@ const ForgotPassword = ({ navigation }) => {
   }, [navigation]);
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Forgot Password</Text>
+      <Text style={styles.title}>{t('reset_password_label')}</Text>
       <TextInput
         style={styles.input}
         placeholder="Enter your email"
@@ -38,7 +40,7 @@ const ForgotPassword = ({ navigation }) => {
         onChangeText={setEmail}
       />
       <TouchableOpacity style={styles.button} onPress={handlePasswordReset}>
-        <Text style={styles.buttonText}>Send Reset Link</Text>
+        <Text style={styles.buttonText}>{t('registered_email_instruction')}</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => navigation.navigate('Login')}>
         <Text style={styles.backText}>Back to Login</Text>

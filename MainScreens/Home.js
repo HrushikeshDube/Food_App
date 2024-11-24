@@ -5,6 +5,13 @@ import { faPlus, faSearch, faUser, faArrowRight } from '@fortawesome/free-solid-
 import { useNavigation } from '@react-navigation/native';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
+import { useTranslation } from 'react-i18next';
+import DropDownPicker from 'react-native-dropdown-picker';
+import i18next from '../services/i18next';
+import LanguageSelector from '../components/langsel';
+
+
+
 
 const { width } = Dimensions.get('window');
 
@@ -30,6 +37,7 @@ const boxImages = [
 ];
 
 const Home = () => {
+  const {t} = useTranslation();
   const navigation = useNavigation();
   const [profileImage, setProfileImage] = useState(null);
   const [offerImages, setOfferImages] = useState([]);
@@ -39,6 +47,14 @@ const Home = () => {
   const [searchText, setSearchText] = useState('');
   const [filteredSpecialItems, setFilteredSpecialItems] = useState([]);
   const [filteredCategories, setFilteredCategories] = useState(boxImages);
+  const [languageOpen, setLanguageOpen] = useState(false);
+  const [languageValue, setLanguageValue] = useState('en');
+
+  const handleLanguageChange = (lang) => {
+    setLanguageValue(lang);
+    i18next.changeLanguage(lang); // Change language dynamically
+  };
+  
 
   useEffect(() => {
     const fetchProfileImage = async () => {
@@ -137,7 +153,8 @@ const Home = () => {
       <ScrollView showsVerticalScrollIndicator={false}>
         {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.brand}>Order Joy, Your Next Meal Is Just A Tap Away!</Text>
+          <Text style={styles.brand}>{t('welcome_message')}</Text>
+          <LanguageSelector/>
           <TouchableOpacity style={styles.menu} onPress={() => navigation.navigate('Account')}>
             {profileImage ? (
               <Image source={{ uri: profileImage }} style={styles.profileImage} />
@@ -146,6 +163,7 @@ const Home = () => {
             )}
           </TouchableOpacity>
         </View>
+         
 
         {/* Search Bar */}
         <View style={styles.searchContainer}>
@@ -186,7 +204,7 @@ const Home = () => {
           </View>
         </View>
 
-        <Text style={styles.ssectext}>Categories</Text>
+        <Text style={styles.ssectext}>{t('menu_categories')}</Text>
         {/* Horizontal Scrolling Component for food categories */}
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.boxContainer}>
           {filteredCategories.map((item, index) => (
@@ -200,8 +218,8 @@ const Home = () => {
         </ScrollView>
 
         <View style={styles.todaysspecialbox}>
-          <Text style={styles.ssectext}>Today's Special</Text>
-          <Text style={styles.secsubtext}>Will Make Your Day Special</Text>
+          <Text style={styles.ssectext}>{t('todays_special')}</Text>
+          <Text style={styles.secsubtext}>{t('special_message')}</Text>
           <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.sboxContainer}>
             {filteredSpecialItems.map((item, index) => (
               <TouchableOpacity
@@ -235,8 +253,8 @@ const Home = () => {
           </ScrollView>
         </View>
         <View style={styles.stodaysspecialbox}>
-  <Text style={styles.ssectext}>Things You Must Try!</Text>
-  <Text style={styles.ssecsubtext}>Don't miss out on these mouth-watering dishes.</Text>
+  <Text style={styles.ssectext}>{t('things_to_try')}</Text>
+  <Text style={styles.ssecsubtext}>{t('dont_miss_message')}</Text>
   <TouchableOpacity style={styles.arrowButton} onPress={() => navigation.navigate('Thingsmusttry')}>
     <FontAwesomeIcon icon={faArrowRight} size={20} color={"#FF5733"} />
   </TouchableOpacity>
@@ -293,9 +311,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10
   },
   brand: {
-    fontSize: 22,
+    fontSize: 18,
     fontWeight: 'bold',
-    width: '80%',
+    width: '55%',
     color: "black",
   },
   menu: {
@@ -540,7 +558,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'black',
     fontSize: 20,
-  },
+  }
 });
 
 export default Home;

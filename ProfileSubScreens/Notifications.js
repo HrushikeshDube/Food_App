@@ -4,8 +4,10 @@ import firestore from '@react-native-firebase/firestore';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faUtensils } from '@fortawesome/free-solid-svg-icons';
 import moment from 'moment';
-
+import i18n from "../services/i18next";
+import { useTranslation } from 'react-i18next';
 const Notifications = () => {
+  const {t} = useTranslation();
   const [notifications, setNotifications] = useState([]);
 
   useEffect(() => {
@@ -72,7 +74,7 @@ const Notifications = () => {
     <View style={styles.container}>
       {notifications.every((section) => section.data.length === 0) ? ( // Check if all sections are empty
         <View style={styles.centeredContainer}>
-          <Text style={styles.emptyText}>No notifications today</Text>
+          <Text style={styles.emptyText}>{t('no_notifications_message')}</Text>
         </View>
       ) : (
         <FlatList

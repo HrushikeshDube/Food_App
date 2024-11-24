@@ -4,8 +4,10 @@ import { firebase } from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
 import auth from '@react-native-firebase/auth';
 import { launchImageLibrary } from 'react-native-image-picker';
-
+import i18n from "../services/i18next";
+import { useTranslation } from 'react-i18next';
 const ProfileScreen = () => {
+  const {t} = useTranslation();
   const [userData, setUserData] = useState({
     username: "",
     phone: "",
@@ -103,19 +105,19 @@ const ProfileScreen = () => {
           />
           <Text style={styles.username}>{userData.username || 'Your username'}</Text>
           <TouchableOpacity onPress={handleImagePick}>
-            <Text style={styles.changePhotoText}>Change photo</Text>
+            <Text style={styles.changePhotoText}>{t('change_photo_label')}</Text>
           </TouchableOpacity>
         </View>
 
         <View style={styles.infoContainer}>
-          <Text style={styles.label}>My username</Text>
+          <Text style={styles.label}>{t('username_label')}</Text>
           <TextInput
             style={styles.input}
             value={userData.username}
             onChangeText={(text) => setUserData({ ...userData, username: text })}
           />
 
-          <Text style={styles.label}>Phone Number</Text>
+          <Text style={styles.label}>{t('phone_number_label')}</Text>
           <TextInput
             style={styles.input}
             value={userData.phone}
@@ -123,14 +125,14 @@ const ProfileScreen = () => {
             keyboardType="phone-pad"
           />
 
-          <Text style={styles.label}>Email</Text>
+          <Text style={styles.label}>{t('email_label')}</Text>
           <TextInput
             style={styles.input}
             value={userData.email}
             editable={false}
           />
 
-          <Text style={styles.label}>My Address</Text>
+          <Text style={styles.label}>{t('address_label')}</Text>
           <TextInput
             style={styles.input}
             value={userData.address}
@@ -139,7 +141,7 @@ const ProfileScreen = () => {
         </View>
 
         <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
-          <Text style={styles.saveButtonText}>Save</Text>
+          <Text style={styles.saveButtonText}>{t('save_button')}</Text>
         </TouchableOpacity>
       </ScrollView>
     </View>

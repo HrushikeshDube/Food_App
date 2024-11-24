@@ -1,8 +1,10 @@
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, ToastAndroid } from 'react-native';
 import React, { useState } from 'react';
 import auth from '@react-native-firebase/auth';
-
+import i18n from "../services/i18next";
+import { useTranslation } from 'react-i18next';
 const Changepassword = () => {
+  const {t} = useTranslation();
   const [email, setEmail] = useState('');
 
   const handlePasswordReset = async () => {
@@ -23,7 +25,7 @@ const Changepassword = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Change Password</Text>
+      <Text style={styles.title}>{t('registered_email_instruction')}</Text>
       <TextInput
         style={styles.input}
         placeholder="Enter your registered email"
@@ -33,7 +35,7 @@ const Changepassword = () => {
         autoCapitalize="none"
       />
       <TouchableOpacity style={styles.button} onPress={handlePasswordReset}>
-        <Text style={styles.buttonText}>Send Reset Link</Text>
+        <Text style={styles.buttonText}>{t('reset_password_label')}</Text>
       </TouchableOpacity>
     </View>
   );

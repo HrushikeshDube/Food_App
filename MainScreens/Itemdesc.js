@@ -4,8 +4,11 @@ import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faHeart, faCartPlus } from '@fortawesome/free-solid-svg-icons';
+import i18n from "../services/i18next";
+import { useTranslation } from 'react-i18next';
 
 const ItemDesc = ({ route }) => {
+  const {t} = useTranslation();
   const { itemId, Foodname = null, Price = "10", image = null, desc = "Delicious Food with fresh ingredients" } = route.params;
   const [quantity, setQuantity] = useState(1);
   const [isWishlisted, setIsWishlisted] = useState(false);
@@ -102,7 +105,7 @@ const ItemDesc = ({ route }) => {
 
         <TouchableOpacity onPress={handleAddToCart} style={styles.addToCartButton}>
           <FontAwesomeIcon icon={faCartPlus} size={20} color="#fff" style={{ marginRight: 10 }} />
-          <Text style={styles.addToCartText}>Add to Cart</Text>
+          <Text style={styles.addToCartText}>{t('add_to_cart_button')}</Text>
         </TouchableOpacity>
       </View>
     </View>

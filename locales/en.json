@@ -1,0 +1,52 @@
+{
+    "welcome_message": "Your next meal is just a tap away! ",
+    "menu_categories": "Categories",
+    "todays_special": "Today's special",
+    "special_message": "Will make your day special.",
+    "things_to_try": "Things you must try!",
+    "dont_miss_message": "Don't miss out on these mouth-watering dishes.",
+    "wishlist_label": "Your wishlist",
+    "wish-empty":"Your wishlist is empty !",
+    "cart_label": "Cart",
+    "cart-empty":"Your cart is empty !",
+    "profile_label": "My profile",
+    "change_password_label": "Change password",
+    "notifications_label": "Notification",
+    "about_us_label": "About us",
+    "sign_out_label": "Sign Out",
+    "change_photo_label": "Change photo",
+    "username_label": "My username",
+    "phone_number_label": "Phone number",
+    "email_label": "Email",
+    "address_label": "My address",
+    "reset_password_label": "Send reset link",
+    "registered_email_instruction": "Use your registered email",
+    "no_notifications_message": "No notifications today",
+    "save_button": "Save",
+    "add_to_cart_button": "Add to cart",
+    "welcomeMessage": "Welcome to FoodOrder App! We are dedicated to providing a seamless dining experience, allowing you to order from your favorite restaurants directly from your table. With FoodOrder, you can skip the wait and enjoy hassle-free, contactless ordering and payments.",
+  "ourMission": "Our mission is to revolutionize the dining experience by connecting customers to restaurants effortlessly. We aim to improve service speed and reduce human contact, making your dining safer, faster, and more enjoyable.",
+  "contactUs": "For any questions or support, feel free to reach out to us at:",
+  "mission":"Our Mission",
+  "cont":"Contact Us",
+  
+
+  
+  "login": "Login",
+    "sign_up": "Sign up",
+    "email": "Email",
+    "password": "Password",
+    "forgot_password": "Forgot Password",
+    "remember_me": "Remember Me",
+    "new_user": "New User ?",
+    "mobile": "Mobile",
+    "address": "Address",
+    "already_registered": "Already Registered ? ",
+
+    "username": "Username",
+    "mobile_number": "Mobile Number",
+    "register": "Register",
+    "sign_in": "Sign In"
+
+  }
+  

@@ -1,0 +1,55 @@
+{
+    "welcome_message": "¡Tu próxima comida está a solo un toque!",
+    "menu_categories": "Categorías",
+    "todays_special": "Especial del día",
+    "special_message": "Hará que tu día sea especial.",
+    "things_to_try": "¡Cosas que debes probar!",
+    "dont_miss_message": "No te pierdas estos deliciosos platillos.",
+    "wishlist_label": "Tu lista de deseos",
+    "wish-empty": "¡Tu lista de deseos está vacía!",
+    "cart_label": "Carrito",
+    "cart-empty": "¡Tu carrito está vacío!",
+    "profile_label": "Mi perfil",
+    "change_password_label": "Cambiar contraseña",
+    "notifications_label": "Notificaciones",
+    "about_us_label": "Sobre nosotros",
+    "sign_out_label": "Cerrar sesión",
+    "change_photo_label": "Cambiar foto",
+    "username_label": "Mi nombre de usuario",
+    "phone_number_label": "Número de teléfono",
+    "email_label": "Correo electrónico",
+    "address_label": "Mi dirección",
+    "reset_password_label": "Enviar enlace de restablecimiento",
+    "registered_email_instruction": "Usa tu correo registrado",
+    "no_notifications_message": "No hay notificaciones hoy",
+    "save_button": "Guardar",
+    "add_to_cart_button": "Añadir al carrito",
+    "welcomeMessage": "¡Bienvenido a FoodOrder App! Estamos dedicados a proporcionar una experiencia de comedor sin problemas, permitiéndote pedir de tus restaurantes favoritos directamente desde tu mesa. Con FoodOrder, puedes evitar las esperas y disfrutar de pedidos y pagos sin contacto.",
+    "ourMission": "Nuestra misión es revolucionar la experiencia de comedor conectando a los clientes con los restaurantes de manera eficiente. Buscamos mejorar la velocidad del servicio y reducir el contacto humano, haciendo que tu experiencia de comedor sea más segura, rápida y placentera.",
+    "contactUs": "Para cualquier pregunta o soporte, no dudes en contactarnos en:",
+    "mission": "Nuestra misión",
+    "cont": "Contáctanos",
+
+
+
+
+    
+        "login": "Iniciar sesión",
+        "sign_up": "サインアップ",
+         "sign_up": "Regístrate",
+        "email": "Correo electrónico",
+        "password": "Contraseña",
+        "forgot_password": "¿Olvidaste tu contraseña?",
+        "remember_me": "Recuérdame",
+        "new_user": "Nuevo usuario? ",
+        "mobile": "Móvil",
+        "address": "Dirección",
+        "already_registered": "Ya registrado ? ",
+
+        "username": "Nombre de usuario",
+    "mobile_number": "Número de móvil",
+    "register": "Registrarse",
+    "sign_in": "Iniciar sesión"
+    
+    
+}

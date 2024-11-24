@@ -14,7 +14,6 @@ import Order from './MainScreens/Order';
 import Account from './MainScreens/Account';
 import ForgotPassword from './MainScreens/Forgotpass';
 import Changepassword from './ProfileSubScreens/Changepassword';
-import Paymentsetting from './ProfileSubScreens/Paymentsetting';
 import Notifications from './ProfileSubScreens/Notifications';
 import Aboutus from './ProfileSubScreens/Aboutus';
 import Myprofile from './ProfileSubScreens/Myprofile';
@@ -28,6 +27,8 @@ import Dal from './ScreensMenu/Dal';
 import Starter from './ScreensMenu/Starter';
 import ThingsmustTry from './ScreensMenu/ThingsmustTry';
 import Itemdesc from './MainScreens/Itemdesc';
+import LanguageSelector from './components/langsel';
+import Languageselector from './components/langsel';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -100,6 +101,7 @@ function App() {
     <NavigationContainer>
       <Stack.Navigator
         screenOptions={{ headerShown: false }}
+        //initialRouteName='Languageselector'
       >
         <Stack.Screen name="Welcome" component={Welcome} />
         <Stack.Screen name="Register" component={Register} />
@@ -109,6 +111,7 @@ function App() {
         <Stack.Screen name="Wishlist" component={Wishlist} />
         <Stack.Screen name="Order" component={Order} />
         <Stack.Screen name="Account" component={Account} />
+        <Stack.Screen name="Languageselector" component={Languageselector} />
         <Stack.Screen
           name="Myprofile"
           component={Myprofile}

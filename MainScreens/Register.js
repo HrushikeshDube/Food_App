@@ -5,10 +5,11 @@ import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
-
+import i18n from "../services/i18next";
+import { useTranslation } from 'react-i18next';
 const Register = () => {
   const navigation = useNavigation();
-
+  const {t} = useTranslation();
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -81,17 +82,17 @@ const Register = () => {
       >
         <View style={styles.box}>
           <Image source={require('../Assests/SAMOSA.png')} style={styles.pic} />
-          <Text style={styles.logintext}>Register</Text>
+          <Text style={styles.logintext}>{t('register')}</Text>
 
           <TextInput
             style={styles.input}
-            placeholder="Username"
+            placeholder={t('username')}
             value={username}
             onChangeText={setUsername}
           />
           <TextInput
             style={styles.input}
-            placeholder="Email"
+            placeholder={t('email')}
             value={email}
             onChangeText={setEmail}
           />
@@ -100,7 +101,7 @@ const Register = () => {
           <View style={styles.passwordContainer}>
             <TextInput
               style={[styles.input, { flex: 1 }]}
-              placeholder="Password"
+              placeholder={t('password')}
               value={password}
               onChangeText={setPassword}
               secureTextEntry={!isPasswordVisible}
@@ -112,13 +113,13 @@ const Register = () => {
 
           <TextInput
             style={styles.input}
-            placeholder="Address"
+            placeholder={t('adress')}
             value={address}
             onChangeText={setAddress}
           />
           <TextInput
             style={styles.input}
-            placeholder="Mobile No"
+            placeholder={t('mobile_number')}
             value={mobile}
             onChangeText={setMobile}
             keyboardType="phone-pad"
@@ -131,16 +132,16 @@ const Register = () => {
               <View style={[styles.checkbox, rememberMe && styles.checkboxChecked]}>
                 {rememberMe && <Text style={styles.checkmark}>✓</Text>}
               </View>
-              <Text style={styles.rememberMeText}>Remember Me</Text>
+              <Text style={styles.rememberMeText}>{t('remember_me')}</Text>
             </TouchableOpacity>
           </View>
           <TouchableOpacity style={styles.button} onPress={handleRegister} activeOpacity={0.5}>
-            <Text style={styles.buttonText}>Register</Text>
+            <Text style={styles.buttonText}>{t('register')}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity onPress={() => navigation.navigate('Login')} activeOpacity={0.5}>
             <Text style={styles.title}>
-              Already Registered? <Text style={styles.signupText}>Sign In</Text>
+              Already Registered? <Text style={styles.signupText}>{t('signin')}</Text>
             </Text>
           </TouchableOpacity>
         </View>

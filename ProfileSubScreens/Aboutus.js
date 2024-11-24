@@ -1,7 +1,10 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Linking } from 'react-native';
+import i18n from "../services/i18next";
+import { useTranslation } from 'react-i18next';
 
 const AboutUs = () => {
+  const {t} = useTranslation();
   const handleContactPress = () => {
     Linking.openURL('mailto:hrushidube9779@gmail.com');
   };
@@ -10,22 +13,20 @@ const AboutUs = () => {
     <ScrollView contentContainerStyle={styles.container}>
       <Image source={require('../Assests/Logo1.png')} style={styles.logo} />
       
-      <Text style={styles.title}>About Us</Text>
+      <Text style={styles.title}>{t('about_us_label')}</Text>
       
       <Text style={styles.description}>
-        Welcome to FoodOrder App! We are dedicated to providing a seamless dining experience, allowing you to order from your favorite restaurants directly from your table.
-        With FoodOrder, you can skip the wait and enjoy hassle-free, contactless ordering and payments.
+      {t('ourMission')}
       </Text>
       
-      <Text style={styles.subheading}>Our Mission</Text>
+      <Text style={styles.subheading}>{t('mission')}</Text>
       <Text style={styles.description}>
-        Our mission is to revolutionize the dining experience by connecting customers to restaurants effortlessly. 
-        We aim to improve service speed and reduce human contact, making your dining safer, faster, and more enjoyable.
+      {t('ourMission')}
       </Text>
       
-      <Text style={styles.subheading}>Contact Us</Text>
+      <Text style={styles.subheading}>{t('cont')}</Text>
       <Text style={styles.description}>
-        For any questions or support, feel free to reach out to us at:
+      {t('contactUs')}
       </Text>
       
       <TouchableOpacity onPress={handleContactPress}>

@@ -1,0 +1,53 @@
+{
+    "welcome_message": "次の食事がワンタップで！",
+    "menu_categories": "カテゴリー",
+    "todays_special": "本日のおすすめ",
+    "special_message": "あなたの一日を特別にします。",
+    "things_to_try": "ぜひ試してみて！",
+    "dont_miss_message": "見逃せない絶品料理。",
+    "wishlist_label": "ウィッシュリスト",
+    "wish-empty": "ウィッシュリストが空です！",
+    "cart_label": "カート",
+    "cart-empty": "カートが空です！",
+    "profile_label": "マイプロフィール",
+    "change_password_label": "パスワードを変更",
+    "notifications_label": "通知",
+    "about_us_label": "私たちについて",
+    "sign_out_label": "サインアウト",
+    "change_photo_label": "写真を変更",
+    "username_label": "ユーザー名",
+    "phone_number_label": "電話番号",
+    "email_label": "メール",
+    "address_label": "住所",
+    "reset_password_label": "リセットリンクを送信",
+    "registered_email_instruction": "登録済みのメールアドレスを使用してください",
+    "no_notifications_message": "今日は通知がありません",
+    "save_button": "保存",
+    "add_to_cart_button": "カートに追加",
+    "welcomeMessage": "FoodOrderアプリへようこそ！私たちは、お気に入りのレストランからテーブルから直接注文できるシームレスなダイニング体験を提供します。待ち時間を短縮し、ストレスフリーで接触のない注文と支払いをお楽しみください。",
+    "ourMission": "私たちの使命は、顧客とレストランを簡単に繋げることで、ダイニング体験を革新することです。サービスの迅速化と接触の削減により、安全で迅速、そしてより快適な食事を提供します。",
+    "contactUs": "ご質問やサポートが必要な場合は、以下までお気軽にお問い合わせください:",
+    "mission": "私たちの使命",
+    "cont": "お問い合わせ",
+
+
+
+    
+        "login": "ログイン",
+        "sign_up": "サインアップ",
+        "email": "メールアドレス",
+        "password": "パスワード",
+        "forgot_password": "パスワードをお忘れですか？",
+        "remember_me": "ログイン情報を記憶する",
+        "new_user": "新しいユーザー ? ",
+        "mobile": "携帯電話",
+        "address": "住所",
+        "already_registered": "すでに登録済み ? ",
+
+        "username": "ユーザー名",
+        "mobile_number": "携帯番号",
+        "register": "登録する",
+        "sign_in": "サインイン"
+    
+    
+}

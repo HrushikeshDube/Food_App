@@ -4,8 +4,11 @@ import { useNavigation } from '@react-navigation/native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import auth from '@react-native-firebase/auth';
-
+import LanguageSelector from '../components/langsel';
+import i18n from "../services/i18next";
+import { useTranslation } from 'react-i18next';
 const Login = () => {
+  const {t} = useTranslation();
   const navigation = useNavigation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -81,17 +84,17 @@ const Login = () => {
       <ScrollView contentContainerStyle={styles.scrollContainer} keyboardShouldPersistTaps="handled">
         <View style={styles.box}>
           <Image source={require('../Assests/SAMOSA.png')} style={styles.pic} />
-          <Text style={styles.logintext}>LOGIN</Text>
+          <Text style={styles.logintext}>{t('login')}</Text>
           <TextInput
             style={styles.input}
-            placeholder="Email"
+            placeholder={t('email')}
             value={email}
             onChangeText={setEmail}
           />
           <View style={styles.passwordContainer}>
             <TextInput
               style={styles.inputPassword}
-              placeholder="Password"
+              placeholder={t('password')}
               value={password}
               onChangeText={setPassword}
               secureTextEntry={!passwordVisible}
@@ -108,20 +111,21 @@ const Login = () => {
               <View style={[styles.checkbox, rememberMe && styles.checkboxChecked]}>
                 {rememberMe && <Text style={styles.checkmark}>✓</Text>}
               </View>
-              <Text style={styles.rememberMeText}>Remember Me</Text>
+              <Text style={styles.rememberMeText}>{t('remember_me')}</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
-              <Text style={styles.forgotText}>Forgot Password?</Text>
+              <Text style={styles.forgotText}>{t('forgot_password')}</Text>
             </TouchableOpacity>
           </View>
           <TouchableOpacity style={styles.button} onPress={handleLogin} activeOpacity={0.5}>
-            <Text style={styles.buttonText}>Login</Text>
+            <Text style={styles.buttonText}>{t('login')}</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.navigate('Register')} activeOpacity={0.5}>
             <Text style={styles.title}>
-              New User? <Text style={styles.signupText}>Sign Up</Text>
+            {t('new_user')} <Text style={styles.signupText}>{t('sign_up')}</Text>
             </Text>
           </TouchableOpacity>
+          <LanguageSelector/>
         </View>
       </ScrollView>
     </ImageBackground>

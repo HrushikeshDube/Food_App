@@ -6,8 +6,10 @@ import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { useNavigation } from '@react-navigation/native';
 import RazorpayCheckout from 'react-native-razorpay';
-
+import i18n from "../services/i18next";
+import { useTranslation } from 'react-i18next';
 const Wishlist = () => {
+  const {t} = useTranslation();
   const [wishlist, setWishlist] = useState([]);
   const navigation = useNavigation();
 
@@ -79,13 +81,13 @@ const Wishlist = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Your Wishlist</Text>
+      <Text style={styles.header}>{t('wishlist_label')}</Text>
       <FlatList
         data={wishlist}
         keyExtractor={(item) => item.id}
         renderItem={renderItem}
         contentContainerStyle={wishlist.length === 0 ? styles.emptyContainer : styles.list}
-        ListEmptyComponent={<Text style={styles.emptyMessage}>Your wishlist is empty.</Text>}
+        ListEmptyComponent={<Text style={styles.emptyMessage}>{t('wish-empty')}</Text>}
       />
     </View>
   );
