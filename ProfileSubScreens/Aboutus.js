@@ -30,6 +30,9 @@ const AboutUs = () => {
       
       <TouchableOpacity onPress={handleContactPress}>
         <Text style={styles.contactText}>hrushidube9779@gmail.com</Text>
+        <Text style={styles.contactText}>sarthakac10@gmail.com</Text>
+        <Text style={styles.contactText}>dangerushi@gmail.com</Text>
+        <Text style={styles.contactText}>kohakalekrishna@gmail.com</Text>
       </TouchableOpacity>
       
       <Text style={styles.footer}>© 2024 FoodOrder Inc. All rights reserved.</Text>

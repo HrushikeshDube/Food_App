@@ -7,7 +7,7 @@ import { launchImageLibrary } from 'react-native-image-picker';
 
 const ProfileScreen = () => {
   const [userData, setUserData] = useState({
-    name: "",
+    username: "",
     phone: "",
     email: "",
     address: "",
@@ -39,7 +39,19 @@ const ProfileScreen = () => {
     const user = auth().currentUser;
     if (user) {
       try {
-        await firebase.firestore().collection('Users').doc(user.email).update(userData);
+        // Update the username and address fields
+        await firebase.firestore().collection('Users').doc(user.email).update({
+          username: userData.username,
+          address: userData.address,
+        });
+
+        // Update the state to reflect changes
+        setUserData((prevData) => ({
+          ...prevData,
+          username: userData.username,
+          address: userData.address,
+        }));
+
         ToastAndroid.show("Profile updated successfully!", ToastAndroid.SHORT);
       } catch (error) {
         console.error("Error updating document:", error);
@@ -61,13 +73,13 @@ const ProfileScreen = () => {
     const user = auth().currentUser;
     if (!user) return;
 
-    const filename = user.email + '_profile.jpg';
-    const storageRef = storage().ref(`profileImages/${filename}`);
+    const fileusername = user.email + '_profile.jpg';
+    const storageRef = storage().ref(`profileImages/${fileusername}`);
 
     try {
       await storageRef.putFile(uri);
       const downloadURL = await storageRef.getDownloadURL();
-      
+
       setUserData((prevData) => ({ ...prevData, profileImage: downloadURL }));
 
       // Update Firestore with new profile image URL
@@ -87,27 +99,27 @@ const ProfileScreen = () => {
         <View style={styles.header}>
           <Image
             style={styles.avatar}
-            source={{ uri: userData.profileImage || 'https://via.placeholder.com/100' }} // Placeholder image if none exists
+            source={{ uri: userData.profileImage || 'https://via.placeholder.com/100' }}
           />
-          <Text style={styles.name}>{userData.name || 'Your Name'}</Text>
+          <Text style={styles.username}>{userData.username || 'Your username'}</Text>
           <TouchableOpacity onPress={handleImagePick}>
             <Text style={styles.changePhotoText}>Change photo</Text>
           </TouchableOpacity>
         </View>
 
         <View style={styles.infoContainer}>
-          <Text style={styles.label}>My Name</Text>
+          <Text style={styles.label}>My username</Text>
           <TextInput
             style={styles.input}
             value={userData.username}
-            onChangeText={(text) => setUserData({ ...userData, name: text })}
+            onChangeText={(text) => setUserData({ ...userData, username: text })}
           />
 
           <Text style={styles.label}>Phone Number</Text>
           <TextInput
             style={styles.input}
-            value={userData.mobile}
-            onChangeText={(text) => setUserData({ ...userData, phone: text })}
+            value={userData.phone}
+            editable={false}
             keyboardType="phone-pad"
           />
 
@@ -115,7 +127,7 @@ const ProfileScreen = () => {
           <TextInput
             style={styles.input}
             value={userData.email}
-            editable={false} // Email should be non-editable
+            editable={false}
           />
 
           <Text style={styles.label}>My Address</Text>
@@ -153,7 +165,7 @@ const styles = StyleSheet.create({
     borderColor: '#FF6347',
     borderWidth: 2,
   },
-  name: {
+  username: {
     fontSize: 22,
     fontWeight: 'bold',
     color: '#333',

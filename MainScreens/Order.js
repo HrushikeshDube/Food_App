@@ -66,18 +66,18 @@ const Order = () => {
   const logo = Image.resolveAssetSource(require('../Assests/Logo1.png')).uri;
   const Paymentrazor = ()=>{
     var options = {
-      description: 'Credits towards consultation',
+      description: 'Pay and have fun',
       image: logo,
       currency: 'INR',
-      key: 'rzp_test_fCrVfSNDHgd0B3',
+      key: 'rzp_test_uY5O09cEm1oquM',
       amount:  totalAmount * 100,
-      name: 'Foodiie',
+      name: 'Foodiee',
       prefill: {
-        email: 'hrushidube@gmail.com',
-        contact: '7498014431',
-        name: 'Hrushikesh Dube'
+        email: '',
+        contact: '',
+        name: ''
       },
-      theme: {color: '#53a20e'}
+      theme: {color: '#FF5733'}
     }
     RazorpayCheckout.open(options).then((data) => {
       // handle success
