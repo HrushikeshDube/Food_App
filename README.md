@@ -7,14 +7,15 @@ A contactless food ordering system built with React Native and Firebase, enablin
 - **Contactless Ordering**: Customers can easily browse the menu and place orders without physical interaction.
 - **Firebase Integration**: Real-time database management and authentication using Firebase.
 - **Payment Options**: Supports cash payments and integrates with popular payment gateways.
+- **Multilingual Support:**: The application offers seamless support for multiple languages, ensuring an inclusive and user-friendly experience for diverse customers.
 - **Order Tracking**: Customers can track the status of their orders in real-time.
 - **User-Friendly Interface**: Intuitive design for a seamless ordering experience.
 
 ## Technologies Used
 
 - **Frontend**: React Native
-- **Backend**: Firebase (Firestore, Authentication)
-- **Payment Integration**: Stripe, PayPal, or custom cash handling
+- **Backend**: Firebase (Firestore, Authentication,Firebase Storage)
+- **Payment Integration**: Razorpay
 - **Deployment**: Expo or any preferred platform
 
 ## Getting Started
